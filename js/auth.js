@@ -142,8 +142,25 @@ function isLoggedIn() {
  */
 function getCurrentUser() {
     const username = localStorage.getItem('agora_currentUser');
-    if (username && users[username]) {
-        return { ...users[username], username };
+    if (username) {
+        // First try to get from users object
+        if (users[username]) {
+            return { ...users[username], username };
+        }
+        // If not in users object, try to load from localStorage
+        const savedData = localStorage.getItem(`agora_user_${username}`);
+        if (savedData) {
+            try {
+                const userData = JSON.parse(savedData);
+                return { ...userData, username };
+            } catch (e) {
+                console.error('Error parsing user data:', e);
+            }
+        }
+        // Fallback to default user data
+        if (users[username]) {
+            return { ...users[username], username };
+        }
     }
     return null;
 }
@@ -315,6 +332,22 @@ function assignChallengeToStudents(coachUsername, challenge, studentUsernames) {
 
 // ===== INITIALIZE AUTH STATE =====
 
+// Load user data from localStorage and merge with in-memory users
+function loadUserDataFromStorage() {
+    Object.keys(users).forEach(username => {
+        const savedData = localStorage.getItem(`agora_user_${username}`);
+        if (savedData) {
+            try {
+                const userData = JSON.parse(savedData);
+                // Merge saved data with default user data
+                users[username] = { ...users[username], ...userData };
+            } catch (e) {
+                console.error('Error loading user data:', e);
+            }
+        }
+    });
+}
+
 // Check if user needs to change password on first login
 function checkFirstLogin() {
     const currentUser = getCurrentUser();
@@ -326,6 +359,9 @@ function checkFirstLogin() {
 
 // Initialize auth state when page loads
 window.addEventListener('DOMContentLoaded', function() {
+    // Load user data from localStorage
+    loadUserDataFromStorage();
+    
     // Add logout button functionality
     const logoutBtn = document.querySelector('.logout-btn');
     if (logoutBtn) {

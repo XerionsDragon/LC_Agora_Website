@@ -1002,6 +1002,11 @@ function copyChallengeToMyChallenges(challenge) {
 
 function saveUserData(username, userData) {
     localStorage.setItem(`agora_user_${username}`, JSON.stringify(userData));
+    
+    // Also update the global users object if it exists
+    if (typeof users !== 'undefined' && users[username]) {
+        users[username] = { ...users[username], ...userData };
+    }
 }
 
 function getRandomColor() {
