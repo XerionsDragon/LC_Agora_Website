@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges - LC Agora</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span>LC Agora</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="agenda.html">Agenda</a></li>
+                    <li><a href="forum.html">Forum</a></li>
+                    <li><a href="challenges.html" class="active">Challenges</a></li>
+                    <li><a href="workshops.html">Workshops</a></li>
+                    <li><a href="inspiratie.html">Inspiratie</a></li>
+                    <li><a href="#" class="coach-only">Beheer</a></li>
+                </ul>
+            </nav>
+            <div class="user-info logout-link">
+                <span class="user-name"></span>
+                <span class="user-role" style="font-size: 14px; opacity: 0.8;"></span>
+                <button class="logout-btn">Uitloggen</button>
+            </div>
+            <div class="login-link">
+                <a href="../login.html" class="btn btn-outline" style="color: white; border-color: white;">Inloggen</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title">Challenges</h1>
+            
+            <!-- My Challenges -->
+            <div class="card fade-in">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: var(--primary-color);">
+                        <i class="fas fa-user"></i> Mijn Challenges
+                    </h2>
+                    <button class="btn btn-primary" id="newChallengeBtn">
+                        <i class="fas fa-plus"></i> Nieuwe Challenge
+                    </button>
+                </div>
+                
+                <div class="challenge-grid" id="myChallengesGrid">
+                    <!-- Challenges will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- New Challenge Form (hidden by default) -->
+            <div class="card fade-in hidden" id="newChallengeCard">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-plus-circle"></i> Nieuwe Challenge aanmaken
+                </h2>
+                <form class="new-challenge-form">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div class="form-group">
+                            <label for="challenge-title">Titel *</label>
+                            <input type="text" id="challenge-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="challenge-deadline">Deadline</label>
+                            <input type="date" id="challenge-deadline">
+                        </div>
+                        <div class="form-group">
+                            <label for="challenge-main-question">Hoofdvraag *</label>
+                            <input type="text" id="challenge-main-question" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="challenge-status">Status</label>
+                            <select id="challenge-status">
+                                <option value="active">Actief</option>
+                                <option value="completed">Afgerond</option>
+                                <option value="paused">Gepauzeerd</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="challenge-description">Beschrijving</label>
+                            <textarea id="challenge-description" rows="4"></textarea>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="challenge-sub-questions">Deelvragen (eén per regel)</label>
+                            <textarea id="challenge-sub-questions" rows="4" placeholder="Bijv: Wat is het probleem?&#10;Hoe kunnen we dit oplossen?&#10;Wat zijn de stappen?"></textarea>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="challenge-participants">Deelnemers (gescheiden door komma's)</label>
+                            <input type="text" id="challenge-participants" placeholder="leerling1, leerling2">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>
+                                <input type="checkbox" id="challenge-public"> 
+                                Openbaar maken (zichtbaar in Inspiratie)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Challenge opslaan
+                        </button>
+                        <button type="button" class="btn btn-danger" id="cancelChallengeBtn">
+                            <i class="fas fa-times"></i> Annuleren
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Shared Challenges (for students) -->
+            <div class="card fade-in student-only">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-users"></i> Gedeelde Challenges
+                </h2>
+                <div class="challenge-grid" id="sharedChallengesGrid">
+                    <!-- Shared challenges will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- All Challenges (for coaches) -->
+            <div class="card fade-in coach-only">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-chalkboard-teacher"></i> Alle Challenges (Coach View)
+                </h2>
+                <div style="margin-bottom: 15px;">
+                    <button class="btn btn-secondary" id="createChallengeForStudentsBtn">
+                        <i class="fas fa-plus"></i> Challenge voor leerlingen aanmaken
+                    </button>
+                </div>
+                <div class="challenge-grid" id="allChallengesGrid">
+                    <!-- All challenges will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const newChallengeBtn = document.getElementById('newChallengeBtn');
+            const newChallengeCard = document.getElementById('newChallengeCard');
+            const cancelChallengeBtn = document.getElementById('cancelChallengeBtn');
+            const newChallengeForm = document.querySelector('.new-challenge-form');
+            
+            // Show/hide new challenge form
+            if (newChallengeBtn && newChallengeCard) {
+                newChallengeBtn.addEventListener('click', function() {
+                    newChallengeCard.classList.remove('hidden');
+                    newChallengeBtn.classList.add('hidden');
+                });
+            }
+            
+            if (cancelChallengeBtn && newChallengeCard) {
+                cancelChallengeBtn.addEventListener('click', function() {
+                    newChallengeCard.classList.add('hidden');
+                    newChallengeBtn.classList.remove('hidden');
+                    newChallengeForm.reset();
+                });
+            }
+            
+            // Create challenge for students (coaches)
+            const createChallengeForStudentsBtn = document.getElementById('createChallengeForStudentsBtn');
+            if (createChallengeForStudentsBtn) {
+                createChallengeForStudentsBtn.addEventListener('click', function() {
+                    alert('Selecteer leerlingen en maak een challenge aan die naar hun account wordt gekopieerd.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
