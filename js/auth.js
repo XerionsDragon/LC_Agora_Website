@@ -225,7 +225,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     // Check if user needs to change password
-    if (isLoggedIn()) {
+    if (isLoggedIn() && !window.location.pathname.includes('change-password.html')) {
         checkFirstLogin();
     }
     
@@ -246,10 +246,16 @@ function updateAuthUI() {
     
     if (user) {
         // Hide login links
-        loginLinks.forEach(link => link.style.display = 'none');
+        loginLinks.forEach(link => {
+            link.style.display = 'none';
+            link.style.visibility = 'hidden';
+        });
         
         // Show logout links
-        logoutLinks.forEach(link => link.style.display = 'block');
+        logoutLinks.forEach(link => {
+            link.style.display = 'block';
+            link.style.visibility = 'visible';
+        });
         
         // Update user info
         userInfoElements.forEach(el => {
@@ -271,10 +277,16 @@ function updateAuthUI() {
         });
     } else {
         // Show login links
-        loginLinks.forEach(link => link.style.display = 'block');
+        loginLinks.forEach(link => {
+            link.style.display = 'block';
+            link.style.visibility = 'visible';
+        });
         
         // Hide logout links
-        logoutLinks.forEach(link => link.style.display = 'none');
+        logoutLinks.forEach(link => {
+            link.style.display = 'none';
+            link.style.visibility = 'hidden';
+        });
         
         // Hide coach/student only elements
         coachOnlyElements.forEach(el => el.style.display = 'none');

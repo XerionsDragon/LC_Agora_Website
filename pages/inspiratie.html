@@ -22,7 +22,8 @@
                     <li><a href="challenges.html">Challenges</a></li>
                     <li><a href="workshops.html">Workshops</a></li>
                     <li><a href="inspiratie.html" class="active">Inspiratie</a></li>
-                    <li><a href="#" class="coach-only">Beheer</a></li>
+                    <li class="coach-only"><a href="challenges.html">Beheer Challenges</a></li>
+                    <li class="coach-only"><a href="workshops.html">Beheer Workshops</a></li>
                 </ul>
             </nav>
             <div class="user-info logout-link">
@@ -49,6 +50,7 @@
                     Kopieer een challenge naar je eigen account en pas deze aan met je eigen invulling.
                 </p>
                 
+                <!-- Search and filter -->
                 <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 250px;">
                         <input type="text" placeholder="Zoeken op titel of beschrijving..." style="width: 100%; padding: 12px; border: 2px solid #DDD; border-radius: 8px;">
@@ -69,8 +71,12 @@
                 </div>
             </div>
             
-            <div class="inspiration-grid" id="inspirationGrid"></div>
+            <!-- Inspiration Grid -->
+            <div class="inspiration-grid" id="inspirationGrid">
+                <!-- Inspiration items will be loaded here -->
+            </div>
             
+            <!-- Featured Challenges -->
             <div class="card fade-in mt-4">
                 <h2 style="color: var(--primary-color); margin-bottom: 20px;">
                     <i class="fas fa-star"></i> Uitgelichte Challenges
@@ -87,7 +93,7 @@
                             <strong>Door:</strong> leerling2
                         </p>
                         <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 15px;">
-                            Een challenge gericht op het verbeteren van de duurzaamheid in de lokale gemeenschap.
+                            Een challenge gericht op het verbeteren van de duurzaamheid in de lokale gemeenschap door afval te verminderen en recycling te bevorderen.
                         </p>
                         <div style="display: flex; gap: 10px;">
                             <span style="background: var(--primary-light); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Duurzaamheid</span>
@@ -99,13 +105,13 @@
                     </div>
                     <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: var(--box-shadow);">
                         <h3 style="color: var(--primary-color); margin-bottom: 10px;">
-                            <i class="fas fa-code"></i> Website Bouwen
+                            <i class="fas fa-code"></i> Website Bouwen voor een Lokaal Bedrijf
                         </h3>
                         <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 10px;">
                             <strong>Door:</strong> leerling3
                         </p>
                         <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 15px;">
-                            Ontwerp en bouw een complete website voor een lokaal bedrijf.
+                            Ontwerp en bouw een complete website voor een lokaal bedrijf, inclusief content management en responsive design.
                         </p>
                         <div style="display: flex; gap: 10px;">
                             <span style="background: var(--primary-light); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Techniek</span>
@@ -123,7 +129,7 @@
                             <strong>Door:</strong> leerling1
                         </p>
                         <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 15px;">
-                            Ontwikkel een programma om jonge kinderen te helpen met lezen.
+                            Ontwikkel een programma om jonge kinderen te helpen met lezen door interactieve verhalen en oefeningen.
                         </p>
                         <div style="display: flex; gap: 10px;">
                             <span style="background: var(--primary-light); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Onderwijs</span>
@@ -136,6 +142,7 @@
                 </div>
             </div>
             
+            <!-- Tips for Creating Good Challenges -->
             <div class="card fade-in mt-4">
                 <h2 style="color: var(--primary-color); margin-bottom: 20px;">
                     <i class="fas fa-tips"></i> Tips voor het Maken van Goede Challenges
@@ -146,7 +153,7 @@
                             <i class="fas fa-target"></i> Duidelijk Doel
                         </h3>
                         <p style="color: var(--text-dark); font-size: 14px;">
-                            Zorg voor een duidelijk en meetbaar doel.
+                            Zorg voor een duidelijk en meetbaar doel. Wat wil je bereiken met deze challenge?
                         </p>
                     </div>
                     <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary-color);">
@@ -154,7 +161,7 @@
                             <i class="fas fa-question-circle"></i> Goede Vragen
                         </h3>
                         <p style="color: var(--text-dark); font-size: 14px;">
-                            Stel uitdagende hoofd- en deelvragen.
+                            Stel uitdagende hoofd- en deelvragen die diepgaand denken stimuleren.
                         </p>
                     </div>
                     <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent-color);">
@@ -162,7 +169,7 @@
                             <i class="fas fa-users"></i> Samenwerking
                         </h3>
                         <p style="color: var(--text-dark); font-size: 14px;">
-                            Werk samen met klasgenoten.
+                            Werk samen met klasgenoten. Vier handen maken meer werk dan twee!
                         </p>
                     </div>
                     <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--success);">
@@ -170,7 +177,7 @@
                             <i class="fas fa-share-alt"></i> Deel je Werk
                         </h3>
                         <p style="color: var(--text-dark); font-size: 14px;">
-                            Maak je challenge openbaar.
+                            Maak je challenge openbaar zodat anderen ervan kunnen leren en geïnspireerd raken.
                         </p>
                     </div>
                 </div>

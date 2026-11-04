@@ -66,12 +66,16 @@
                 const result = login(username, password);
                 
                 if (result.success) {
+                    // Show notice if first login
                     if (result.firstLogin) {
                         passwordChangeNotice.classList.remove('hidden');
+                        
+                        // Redirect to change password page
                         setTimeout(function() {
                             window.location.href = 'change-password.html';
                         }, 2000);
                     } else {
+                        // Redirect to homepage
                         window.location.href = 'index.html';
                     }
                 } else {
@@ -79,6 +83,7 @@
                 }
             });
             
+            // Reset password link (for coaches)
             resetPasswordLink.addEventListener('click', function(e) {
                 e.preventDefault();
                 const username = prompt('Voer je coach gebruikersnaam in:');

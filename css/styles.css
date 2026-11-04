@@ -927,6 +927,11 @@ body {
     text-align: center;
 }
 
+.coach-only,
+.student-only {
+    display: none;
+}
+
 .mt-1 { margin-top: 5px; }
 .mt-2 { margin-top: 10px; }
 .mt-3 { margin-top: 15px; }
