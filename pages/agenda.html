@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - LC Agora</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span>LC Agora</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="agenda.html" class="active">Agenda</a></li>
+                    <li><a href="forum.html">Forum</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="workshops.html">Workshops</a></li>
+                    <li><a href="inspiratie.html">Inspiratie</a></li>
+                    <li><a href="#" class="coach-only">Beheer</a></li>
+                </ul>
+            </nav>
+            <div class="user-info logout-link">
+                <span class="user-name"></span>
+                <span class="user-role" style="font-size: 14px; opacity: 0.8;"></span>
+                <button class="logout-btn">Uitloggen</button>
+            </div>
+            <div class="login-link">
+                <a href="../login.html" class="btn btn-outline" style="color: white; border-color: white;">Inloggen</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title">Agenda</h1>
+            
+            <div class="card fade-in">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <h2 class="calendar-title">Kalender</h2>
+                        <div class="calendar-nav">
+                            <button class="btn btn-outline btn-prev">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-outline btn-next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid"></div>
+                </div>
+            </div>
+            
+            <div class="fade-in">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 0;">
+                    <h2 style="color: var(--primary-color);">
+                        <i class="fas fa-tasks"></i> To-Do Lijst
+                    </h2>
+                    <button class="btn btn-primary" id="addTodoBtn">
+                        <i class="fas fa-plus"></i> Taak toevoegen
+                    </button>
+                </div>
+                
+                <div class="todo-list"></div>
+                
+                <form class="add-todo hidden" id="addTodoForm">
+                    <input type="text" placeholder="Voer een nieuwe taak in..." required>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Toevoegen
+                    </button>
+                    <button type="button" class="btn btn-danger" id="cancelTodoBtn">
+                        <i class="fas fa-times"></i> Annuleren
+                    </button>
+                </form>
+            </div>
+            
+            <div class="card fade-in">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-plus-circle"></i> Event toevoegen
+                </h2>
+                <form id="addEventForm">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div class="form-group">
+                            <label for="event-title">Titel</label>
+                            <input type="text" id="event-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-date">Datum</label>
+                            <input type="date" id="event-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-time">Tijd (optioneel)</label>
+                            <input type="time" id="event-time">
+                        </div>
+                        <div class="form-group">
+                            <label for="event-description">Beschrijving</label>
+                            <textarea id="event-description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-calendar-plus"></i> Event toevoegen
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add todo button
+            const addTodoBtn = document.getElementById('addTodoBtn');
+            const addTodoForm = document.getElementById('addTodoForm');
+            const cancelTodoBtn = document.getElementById('cancelTodoBtn');
+            
+            if (addTodoBtn && addTodoForm) {
+                addTodoBtn.addEventListener('click', function() {
+                    addTodoForm.classList.remove('hidden');
+                    addTodoBtn.classList.add('hidden');
+                });
+            }
+            
+            if (cancelTodoBtn && addTodoForm) {
+                cancelTodoBtn.addEventListener('click', function() {
+                    addTodoForm.classList.add('hidden');
+                    addTodoBtn.classList.remove('hidden');
+                    addTodoForm.reset();
+                });
+            }
+            
+            // Add event form
+            const addEventForm = document.getElementById('addEventForm');
+            if (addEventForm) {
+                addEventForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const user = getCurrentUser();
+                    if (!user) {
+                        alert('Je moet ingelogd zijn om events toe te voegen');
+                        return;
+                    }
+                    
+                    const title = document.getElementById('event-title').value.trim();
+                    const date = document.getElementById('event-date').value;
+                    const time = document.getElementById('event-time').value;
+                    const description = document.getElementById('event-description').value.trim();
+                    
+                    if (!title || !date) {
+                        alert('Vul alstublieft een titel en datum in');
+                        return;
+                    }
+                    
+                    if (!user.agenda) {
+                        user.agenda = [];
+                    }
+                    
+                    user.agenda.push({
+                        title,
+                        date,
+                        time,
+                        description
+                    });
+                    
+                    // Save to localStorage
+                    localStorage.setItem(`agora_user_${user.username}`, JSON.stringify(user));
+                    
+                    // Reset form
+                    addEventForm.reset();
+                    
+                    // Refresh calendar
+                    initCalendar();
+                    
+                    alert('Event succesvol toegevoegd!');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
