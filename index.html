@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LC Agora - Welkom</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span>LC Agora</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="pages/agenda.html">Agenda</a></li>
+                    <li><a href="pages/forum.html">Forum</a></li>
+                    <li><a href="#" class="coach-only">Beheer</a></li>
+                </ul>
+            </nav>
+            <div class="user-info logout-link">
+                <span class="user-name"></span>
+                <span class="user-role" style="font-size: 14px; opacity: 0.8;"></span>
+                <button class="logout-btn">Uitloggen</button>
+            </div>
+            <div class="login-link">
+                <a href="login.html" class="btn btn-outline" style="color: white; border-color: white;">Inloggen</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title fade-in">Welkom op het LC Agora Platform</h1>
+            <p class="text-center" style="color: var(--text-light); margin-bottom: 30px; font-size: 18px;">
+                Kies een onderdeel om te beginnen
+            </p>
+            
+            <div class="modules-grid fade-in">
+                <!-- Challenges -->
+                <div class="module-card" data-module="challenges">
+                    <div class="module-image" style="background: linear-gradient(135deg, #2E8B57, #3CB371); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="module-content">
+                        <h2 class="module-title">Challenges</h2>
+                        <p class="module-description">
+                            Maak en beheer je eigen challenges. Voeg klasgenoten toe en werk samen aan uitdagende projecten.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Workshops -->
+                <div class="module-card" data-module="workshops">
+                    <div class="module-image" style="background: linear-gradient(135deg, #3498DB, #2980B9); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="module-content">
+                        <h2 class="module-title">Workshops</h2>
+                        <p class="module-description">
+                            Schrijf je in voor workshops georganiseerd door coaches. Leer nieuwe vaardigheden en werk aan praktische opdrachten.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Inspiratie -->
+                <div class="module-card" data-module="inspiratie">
+                    <div class="module-image" style="background: linear-gradient(135deg, #9B59B6, #8E44AD); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="module-content">
+                        <h2 class="module-title">Inspiratie</h2>
+                        <p class="module-description">
+                            Bekijk openbare challenges van andere leerlingen. Laat je inspireren en kopieer ideeën naar je eigen projecten.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Agenda -->
+                <div class="module-card" data-module="agenda">
+                    <div class="module-image" style="background: linear-gradient(135deg, #F39C12, #E67E22); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="module-content">
+                        <h2 class="module-title">Agenda</h2>
+                        <p class="module-description">
+                            Plan je challenges en bekijk belangrijke gebeurtenissen. Beheer je to-do lijst en blijf georganiseerd.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Forum -->
+                <div class="module-card" data-module="forum">
+                    <div class="module-image" style="background: linear-gradient(135deg, #E74C3C, #C0392B); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="module-content">
+                        <h2 class="module-title">Forum</h2>
+                        <p class="module-description">
+                            Chat met coaches en medeleerlingen. Stel vragen, deel ideeën en werk samen in groepen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-4 fade-in" style="text-align: center;">
+                <h2 style="color: var(--primary-color); margin-bottom: 15px;">
+                    <i class="fas fa-info-circle"></i> Over LC Agora
+                </h2>
+                <p style="color: var(--text-dark); line-height: 1.8;">
+                    LC Agora is een innovatief onderwijsplatform voor Agora-scholen. 
+                    Hier kunnen leerlingen zelfstandig werken aan challenges, deelnemen aan workshops, 
+                    zich laten inspireren door anderen en communiceren met coaches en medeleerlingen.
+                    <br><br>
+                    Het Agora-onderwijs draait om zelfsturing, samenwerking en real-world learning.
+                </p>
+            </div>
+        </div>
+    </main>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
