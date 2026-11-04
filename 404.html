@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina niet gevonden - LC Agora</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span>LC Agora</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                </ul>
+            </nav>
+            <div class="user-info logout-link">
+                <span class="user-name"></span>
+                <button class="logout-btn">Uitloggen</button>
+            </div>
+            <div class="login-link">
+                <a href="login.html" class="btn btn-outline" style="color: white; border-color: white;">Inloggen</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container" style="text-align: center;">
+            <div class="fade-in">
+                <h1 style="font-size: 100px; color: var(--danger); margin-bottom: 20px;">404</h1>
+                <h2 class="page-title">Pagina niet gevonden</h2>
+                <p style="color: var(--text-light); font-size: 18px; margin-bottom: 30px;">
+                    De pagina die je zoekt bestaat niet of is verplaatst.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Terug naar Home
+                    </a>
+                    <a href="javascript:history.back()" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Terug naar vorige pagina
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="js/auth.js"></script>
+</body>
+</html>
