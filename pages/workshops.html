@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshops - LC Agora</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span>LC Agora</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="agenda.html">Agenda</a></li>
+                    <li><a href="forum.html">Forum</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="workshops.html" class="active">Workshops</a></li>
+                    <li><a href="inspiratie.html">Inspiratie</a></li>
+                    <li><a href="#" class="coach-only">Beheer</a></li>
+                </ul>
+            </nav>
+            <div class="user-info logout-link">
+                <span class="user-name"></span>
+                <span class="user-role" style="font-size: 14px; opacity: 0.8;"></span>
+                <button class="logout-btn">Uitloggen</button>
+            </div>
+            <div class="login-link">
+                <a href="../login.html" class="btn btn-outline" style="color: white; border-color: white;">Inloggen</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title">Workshops</h1>
+            
+            <!-- Available Workshops -->
+            <div class="card fade-in">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-calendar-check"></i> Beschikbare Workshops
+                </h2>
+                <div class="workshop-grid" id="workshopGrid">
+                    <!-- Workshops will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- New Workshop Form (Coaches only) -->
+            <div class="card fade-in coach-only" id="newWorkshopCard">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-plus-circle"></i> Nieuwe Workshop aanmaken
+                </h2>
+                <form class="new-workshop-form">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                        <div class="form-group">
+                            <label for="workshop-title">Titel *</label>
+                            <input type="text" id="workshop-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workshop-date">Datum *</label>
+                            <input type="date" id="workshop-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workshop-time">Tijd *</label>
+                            <input type="time" id="workshop-time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workshop-location">Locatie *</label>
+                            <input type="text" id="workshop-location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workshop-max-participants">Maximaal aantal deelnemers</label>
+                            <input type="number" id="workshop-max-participants" value="10" min="1">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="workshop-description">Beschrijving *</label>
+                            <textarea id="workshop-description" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="workshop-category">Categorie</label>
+                            <select id="workshop-category">
+                                <option value="taal">Taal (Engels, Nederlands, etc.)</option>
+                                <option value="praktijk">Praktijk (Maaltijden, Fruit plukken, etc.)</option>
+                                <option value="creatief">Creatief</option>
+                                <option value="techniek">Techniek</option>
+                                <option value="sport">Sport</option>
+                                <option value="ander">Anders</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Workshop opslaan
+                        </button>
+                        <button type="button" class="btn btn-danger" id="cancelWorkshopBtn">
+                            <i class="fas fa-times"></i> Annuleren
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- My Registered Workshops -->
+            <div class="card fade-in">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-user-check"></i> Mijn Ingeschreven Workshops
+                </h2>
+                <div class="workshop-grid" id="myWorkshopsGrid">
+                    <!-- My workshops will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Workshop Examples -->
+            <div class="card fade-in">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-lightbulb"></i> Voorbeelden van Workshops
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                    <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-language"></i> Engelse Les
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 5px;">
+                            <strong>Beschrijving:</strong> Verbeter je Engels door conversatie en praktische oefeningen.
+                        </p>
+                        <p style="color: var(--text-light); font-size: 13px;">
+                            <strong>Doel:</strong> Betere beheersing van de Engelse taal
+                        </p>
+                    </div>
+                    <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary-color);">
+                        <h3 style="color: var(--secondary-color); margin-bottom: 10px;">
+                            <i class="fas fa-utensils"></i> Maaltijden voor Ouderen
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 5px;">
+                            <strong>Beschrijving:</strong> Leer koken en bereid maaltijden voor ouderen in de buurt.
+                        </p>
+                        <p style="color: var(--text-light); font-size: 13px;">
+                            <strong>Doel:</strong> Sociale betrokkenheid en kookvaardigheden
+                        </p>
+                    </div>
+                    <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent-color);">
+                        <h3 style="color: var(--accent-color); margin-bottom: 10px;">
+                            <i class="fas fa-apple-alt"></i> Fruit Plukken bij de Boer
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 5px;">
+                            <strong>Beschrijving:</strong> Help de boer met het plukken van seizoensfruit.
+                        </p>
+                        <p style="color: var(--text-light); font-size: 13px;">
+                            <strong>Doel:</strong> Leren over landbouw en seizoensgebonden werk
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelWorkshopBtn = document.getElementById('cancelWorkshopBtn');
+            const newWorkshopForm = document.querySelector('.new-workshop-form');
+            
+            if (cancelWorkshopBtn && newWorkshopForm) {
+                cancelWorkshopBtn.addEventListener('click', function() {
+                    newWorkshopForm.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
