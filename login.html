@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggen - LC Agora</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container fade-in">
+        <div class="login-logo">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        
+        <h1 class="login-title">LC Agora</h1>
+        <p class="login-subtitle">Log in om toegang te krijgen tot het Agora-platform</p>
+        
+        <form class="login-form" id="loginForm">
+            <div class="login-input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Gebruikersnaam" required>
+            </div>
+            
+            <div class="login-input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Wachtwoord" required>
+            </div>
+            
+            <div class="login-options">
+                <a href="#">Wachtwoord vergeten?</a>
+                <a href="#" class="coach-only" id="resetPasswordLink">Wachtwoord resetten (coaches)</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary login-btn">Inloggen</button>
+        </form>
+        
+        <div class="password-change-notice hidden" id="passwordChangeNotice">
+            <p><strong>Belangrijk:</strong> Dit is je eerste keer inloggen. Je moet je wachtwoord wijzigen na het inloggen.</p>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <p style="color: var(--text-light); font-size: 14px;">
+                <i class="fas fa-info-circle"></i> Gebruik een van de volgende accounts om in te loggen:
+            </p>
+            <ul style="text-align: left; display: inline-block; margin-top: 10px; color: var(--text-light); font-size: 14px;">
+                <li><strong>Coaches:</strong> coach1 / Agora2024! of coach2 / Agora2024!</li>
+                <li><strong>Leerlingen:</strong> leerling1-5 / TempPass123-112</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const passwordChangeNotice = document.getElementById('passwordChangeNotice');
+            const resetPasswordLink = document.getElementById('resetPasswordLink');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                
+                const result = login(username, password);
+                
+                if (result.success) {
+                    if (result.firstLogin) {
+                        passwordChangeNotice.classList.remove('hidden');
+                        setTimeout(function() {
+                            window.location.href = 'change-password.html';
+                        }, 2000);
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    alert(result.message);
+                }
+            });
+            
+            resetPasswordLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const username = prompt('Voer je coach gebruikersnaam in:');
+                const studentUsername = prompt('Voer de gebruikersnaam van de leerling in:');
+                const newPassword = prompt('Voer het nieuwe wachtwoord in (minimaal 8 tekens):');
+                
+                if (username && studentUsername && newPassword) {
+                    const result = resetPassword(username, studentUsername, newPassword);
+                    alert(result.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
