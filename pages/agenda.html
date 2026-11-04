@@ -6,6 +6,47 @@
     <title>Agenda - LC Agora</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .event-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+        .event-modal.active {
+            display: block;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .modal-overlay.active {
+            display: block;
+        }
+        .sharing-options {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .share-checkbox {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -41,147 +82,80 @@
         <div class="container">
             <h1 class="page-title">Agenda</h1>
             
-            <!-- For Students: Personal Calendar and Todo -->
-            <div class="student-only">
-                <div class="card fade-in">
-                    <div class="calendar">
-                        <div class="calendar-header">
-                            <h2 class="calendar-title">Mijn Kalender</h2>
-                            <div class="calendar-nav">
-                                <button class="btn btn-outline btn-prev">
-                                    <i class="fas fa-chevron-left"></i>
-                                </button>
-                                <button class="btn btn-outline btn-next">
-                                    <i class="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="calendar-grid" id="studentCalendarGrid"></div>
-                    </div>
-                </div>
-                
-                <div class="fade-in">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 0;">
-                        <h2 style="color: var(--primary-color);">
-                            <i class="fas fa-tasks"></i> Mijn To-Do Lijst
-                        </h2>
-                        <button class="btn btn-primary" id="addTodoBtn">
-                            <i class="fas fa-plus"></i> Taak toevoegen
-                        </button>
-                    </div>
-                    
-                    <div class="todo-list" id="studentTodoList"></div>
-                    
-                    <form class="add-todo hidden" id="addTodoForm">
-                        <input type="text" placeholder="Voer een nieuwe taak in..." required>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-check"></i> Toevoegen
-                        </button>
-                        <button type="button" class="btn btn-danger" id="cancelTodoBtn">
-                            <i class="fas fa-times"></i> Annuleren
-                        </button>
-                    </form>
-                </div>
-                
-                <div class="card fade-in">
-                    <h2 style="color: var(--primary-color); margin-bottom: 20px;">
-                        <i class="fas fa-plus-circle"></i> Persoonlijk Event toevoegen
-                    </h2>
-                    <form id="addPersonalEventForm">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                            <div class="form-group">
-                                <label for="event-title">Titel</label>
-                                <input type="text" id="event-title" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="event-date">Datum</label>
-                                <input type="date" id="event-date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="event-time">Tijd (optioneel)</label>
-                                <input type="time" id="event-time">
-                            </div>
-                            <div class="form-group" style="grid-column: 1 / -1;">
-                                <label for="event-description">Beschrijving (optioneel)</label>
-                                <textarea id="event-description" rows="2"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-actions" style="margin-top: 15px;">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-calendar-plus"></i> Event toevoegen
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                
-                <!-- Student: Challenge Deadlines -->
-                <div class="card fade-in mt-4">
-                    <h2 style="color: var(--primary-color); margin-bottom: 20px;">
-                        <i class="fas fa-exclamation-triangle"></i> Mijn Challenge Deadlines
-                    </h2>
-                    <div id="studentDeadlines" class="challenge-grid">
-                        <!-- Deadlines will be loaded here -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- For Coaches: Overview of Student Deadlines and Events -->
-            <div class="coach-only">
-                <!-- Coach Calendar with Student Deadlines -->
-                <div class="card fade-in">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2 style="color: var(--primary-color);">
-                            <i class="fas fa-calendar-alt"></i> Kalender - Deadlines van Mijn Leerlingen
-                        </h2>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn btn-outline" id="prevMonthBtn">
+            <!-- Main Calendar for everyone -->
+            <div class="card fade-in">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <h2 class="calendar-title" id="calendarTitle">Kalender</h2>
+                        <div class="calendar-nav">
+                            <button class="btn btn-outline btn-prev" id="prevMonth">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <button class="btn btn-outline" id="nextMonthBtn">
+                            <button class="btn btn-outline btn-next" id="nextMonth">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
                         </div>
                     </div>
-                    <div id="coachDeadlinesCalendar" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;"></div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+            </div>
+            
+            <!-- To-Do List for everyone -->
+            <div class="fade-in" style="margin-top: 30px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: var(--primary-color);">
+                        <i class="fas fa-tasks"></i> To-Do Lijst
+                    </h2>
+                    <button class="btn btn-primary" id="addTodoBtn">
+                        <i class="fas fa-plus"></i> Taak toevoegen
+                    </button>
                 </div>
                 
-                <!-- Add Event to Students -->
-                <div class="card fade-in mt-4">
-                    <h2 style="color: var(--primary-color); margin-bottom: 20px;">
-                        <i class="fas fa-calendar-plus"></i> Event Toevoegen aan Leerlingen
-                    </h2>
-                    <form id="addEventToStudentsForm">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                            <div class="form-group">
-                                <label for="coach-event-title">Titel *</label>
-                                <input type="text" id="coach-event-title" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="coach-event-date">Datum *</label>
-                                <input type="date" id="coach-event-date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="coach-event-time">Tijd (optioneel)</label>
-                                <input type="time" id="coach-event-time">
-                            </div>
-                            <div class="form-group" style="grid-column: 1 / -1;">
-                                <label for="coach-event-description">Beschrijving (optioneel)</label>
-                                <textarea id="coach-event-description" rows="2"></textarea>
-                            </div>
-                            <div class="form-group" style="grid-column: 1 / -1;">
-                                <label>Selecteer doelgroep:</label>
-                                <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                    <select id="coach-event-audience" style="padding: 10px; border-radius: 8px; border: 2px solid #DDD; flex: 1;">
-                                        <option value="individual">Individuele leerlingen</option>
-                                        <option value="class">Specifieke klas</option>
-                                        <option value="myclass">Mijn klassen</option>
-                                        <option value="all">Alle leerlingen</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group" id="coach-individual-students-group" style="grid-column: 1 / -1; display: none;">
-                                <label>Selecteer leerlingen (meerdere met Ctrl/Cmd):</label>
-                                <select id="coach-event-students" multiple size="5" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
+                <div class="todo-list" id="todoList"></div>
+                
+                <form class="add-todo hidden" id="addTodoForm">
+                    <input type="text" placeholder="Voer een nieuwe taak in..." required>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Toevoegen
+                    </button>
+                    <button type="button" class="btn btn-danger" id="cancelTodoBtn">
+                        <i class="fas fa-times"></i> Annuleren
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Event Creation Form -->
+            <div class="card fade-in" style="margin-top: 30px;">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-plus-circle"></i> Event toevoegen
+                </h2>
+                <form id="addEventForm">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div class="form-group">
+                            <label for="event-title">Titel *</label>
+                            <input type="text" id="event-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-date">Datum *</label>
+                            <input type="date" id="event-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-time">Tijd (optioneel)</label>
+                            <input type="time" id="event-time">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="event-description">Beschrijving (optioneel)</label>
+                            <textarea id="event-description" rows="2"></textarea>
+                        </div>
+                        
+                        <!-- Sharing options for coaches -->
+                        <div class="form-group coach-only" id="sharingGroup" style="grid-column: 1 / -1; display: none;">
+                            <label>
+                                <input type="checkbox" id="shareWithStudents"> 
+                                Delen met leerlingen
+                            </label>
+                            <div id="studentSelection" style="margin-top: 10px; display: none;">
+                                <select id="selectStudentsToShare" multiple size="4" style="width: 100%; padding: 8px; border-radius: 6px; border: 2px solid #DDD;">
                                     <option value="leerling1">Lars de Vries (Klas 1)</option>
                                     <option value="leerling2">Emma van Dijk (Klas 1)</option>
                                     <option value="leerling3">Sem van der Meer (Klas 2)</option>
@@ -189,150 +163,239 @@
                                     <option value="leerling5">Daan van Leeuwen (Klas 3)</option>
                                 </select>
                                 <small style="color: var(--text-light); display: block; margin-top: 5px;">
-                                    <i class="fas fa-info-circle"></i> Gebruik Ctrl (Windows) of Cmd (Mac) om meerdere leerlingen te selecteren
+                                    <i class="fas fa-info-circle"></i> Gebruik Ctrl/Cmd om meerdere te selecteren
                                 </small>
                             </div>
-                            <div class="form-group" id="coach-class-group" style="grid-column: 1 / -1; display: none;">
-                                <label>Selecteer klas:</label>
-                                <select id="coach-event-class" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
-                                    <option value="">-- Kies een klas --</option>
+                            <div id="classSelection" style="margin-top: 10px; display: none;">
+                                <select id="selectClassToShare" style="width: 100%; padding: 8px; border-radius: 6px; border: 2px solid #DDD;">
+                                    <option value="">-- Selecteer klas --</option>
                                     <option value="klasse1">Klas 1</option>
                                     <option value="klasse2">Klas 2</option>
                                     <option value="klasse3">Klas 3</option>
                                 </select>
                             </div>
+                            <label style="margin-top: 10px; display: block;">
+                                <input type="checkbox" id="shareWithCoaches"> 
+                                Delen met andere coaches
+                            </label>
                         </div>
-                        <div class="form-actions" style="margin-top: 15px;">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane"></i> Event toevoegen aan geselecteerde
-                            </button>
-                        </div>
-                    </form>
-                    <div id="eventAssignmentResult" style="margin-top: 15px; padding: 10px; border-radius: 8px; display: none;"></div>
-                </div>
-                
-                <!-- Coach: All Student Deadlines List -->
-                <div class="card fade-in mt-4">
-                    <h2 style="color: var(--primary-color); margin-bottom: 20px;">
-                        <i class="fas fa-list"></i> Alle Challenge Deadlines van Mijn Leerlingen
-                    </h2>
-                    <div id="coachDeadlinesList" class="challenge-grid">
-                        <!-- Deadlines will be loaded here -->
                     </div>
-                </div>
+                    <div class="form-actions" style="margin-top: 15px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-calendar-plus"></i> Event toevoegen
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Coach-specific: Student Deadlines Overview -->
+            <div class="card fade-in mt-4 coach-only">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-exclamation-triangle"></i> Challenge Deadlines van Mijn Leerlingen
+                </h2>
+                <div id="coachDeadlinesList" class="challenge-grid"></div>
+            </div>
+            
+            <!-- Coach-specific: Add Event to Students -->
+            <div class="card fade-in mt-4 coach-only">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-calendar-plus"></i> Event Toevoegen aan Leerlingen
+                </h2>
+                <form id="addEventToStudentsForm">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div class="form-group">
+                            <label for="coach-event-title">Titel *</label>
+                            <input type="text" id="coach-event-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="coach-event-date">Datum *</label>
+                            <input type="date" id="coach-event-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="coach-event-time">Tijd (optioneel)</label>
+                            <input type="time" id="coach-event-time">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="coach-event-description">Beschrijving (optioneel)</label>
+                            <textarea id="coach-event-description" rows="2"></textarea>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>Selecteer doelgroep:</label>
+                            <select id="coach-event-audience" style="padding: 10px; border-radius: 8px; border: 2px solid #DDD; width: 100%;">
+                                <option value="individual">Individuele leerlingen</option>
+                                <option value="class">Specifieke klas</option>
+                                <option value="myclass">Mijn klassen</option>
+                                <option value="all">Alle leerlingen</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="coach-individual-students-group" style="grid-column: 1 / -1; display: none;">
+                            <label>Selecteer leerlingen:</label>
+                            <select id="coach-event-students" multiple size="5" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
+                                <option value="leerling1">Lars de Vries (Klas 1)</option>
+                                <option value="leerling2">Emma van Dijk (Klas 1)</option>
+                                <option value="leerling3">Sem van der Meer (Klas 2)</option>
+                                <option value="leerling4">Sophie Kuiper (Klas 2)</option>
+                                <option value="leerling5">Daan van Leeuwen (Klas 3)</option>
+                            </select>
+                            <small style="color: var(--text-light); display: block; margin-top: 5px;">
+                                <i class="fas fa-info-circle"></i> Gebruik Ctrl/Cmd om meerdere te selecteren
+                            </small>
+                        </div>
+                        <div class="form-group" id="coach-class-group" style="grid-column: 1 / -1; display: none;">
+                            <label>Selecteer klas:</label>
+                            <select id="coach-event-class" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
+                                <option value="">-- Kies een klas --</option>
+                                <option value="klasse1">Klas 1</option>
+                                <option value="klasse2">Klas 2</option>
+                                <option value="klasse3">Klas 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions" style="margin-top: 15px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Event toevoegen aan geselecteerde
+                        </button>
+                    </div>
+                </form>
+                <div id="eventAssignmentResult" style="margin-top: 15px; padding: 10px; border-radius: 8px; display: none;"></div>
             </div>
         </div>
     </main>
     
+    <!-- Event Modal for clicking on calendar days -->
+    <div class="modal-overlay" id="eventModalOverlay"></div>
+    <div class="event-modal" id="eventModal">
+        <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+            <i class="fas fa-calendar-plus"></i> Event toevoegen voor <span id="modalDate"></span>
+        </h2>
+        <form id="modalEventForm">
+            <div class="form-group">
+                <label for="modal-event-title">Titel *</label>
+                <input type="text" id="modal-event-title" required>
+            </div>
+            <div class="form-group">
+                <label for="modal-event-time">Tijd (optioneel)</label>
+                <input type="time" id="modal-event-time">
+            </div>
+            <div class="form-group">
+                <label for="modal-event-description">Beschrijving (optioneel)</label>
+                <textarea id="modal-event-description" rows="3"></textarea>
+            </div>
+            <div class="form-actions" style="margin-top: 15px;">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Opslaan
+                </button>
+                <button type="button" class="btn btn-danger" id="cancelModalBtn">
+                    <i class="fas fa-times"></i> Annuleren
+                </button>
+            </div>
+        </form>
+    </div>
+    
     <script src="../js/auth.js"></script>
     <script src="../js/main.js"></script>
     <script>
+        // Calendar state
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let selectedDate = null;
+        
         document.addEventListener('DOMContentLoaded', function() {
             const user = getCurrentUser();
             
-            if (isStudent()) {
-                // Initialize student calendar
-                initStudentCalendar();
-                
-                // Initialize student todo list
-                initStudentTodoList();
-                
-                // Initialize personal event form
-                const personalEventForm = document.getElementById('addPersonalEventForm');
-                if (personalEventForm) {
-                    personalEventForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        addPersonalEvent();
-                    });
+            // Initialize calendar
+            renderCalendar(currentMonth, currentYear);
+            
+            // Setup calendar navigation
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
                 }
-                
-                // Load student deadlines
-                loadStudentDeadlines();
+                renderCalendar(currentMonth, currentYear);
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar(currentMonth, currentYear);
+            });
+            
+            // Initialize todo list
+            initTodoList();
+            
+            // Initialize event form
+            const eventForm = document.getElementById('addEventForm');
+            if (eventForm) {
+                eventForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addEvent();
+                });
             }
             
+            // Initialize sharing options for coaches
             if (isCoach()) {
-                // Initialize coach deadlines view
-                loadCoachDeadlinesCalendar();
+                const shareCheckbox = document.getElementById('shareWithStudents');
+                if (shareCheckbox) {
+                    shareCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            document.getElementById('studentSelection').style.display = 'block';
+                            document.getElementById('classSelection').style.display = 'block';
+                        } else {
+                            document.getElementById('studentSelection').style.display = 'none';
+                            document.getElementById('classSelection').style.display = 'none';
+                        }
+                    });
+                }
+                
+                // Setup coach-specific forms
+                setupCoachEventForm();
                 loadCoachDeadlinesList();
-                
-                // Setup audience selection
-                const audienceSelect = document.getElementById('coach-event-audience');
-                if (audienceSelect) {
-                    audienceSelect.addEventListener('change', function() {
-                        updateCoachEventForm();
-                    });
-                }
-                
-                // Setup event form
-                const eventForm = document.getElementById('addEventToStudentsForm');
-                if (eventForm) {
-                    eventForm.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        addEventToStudents();
-                    });
-                }
-                
-                // Setup calendar navigation
-                const prevBtn = document.getElementById('prevMonthBtn');
-                const nextBtn = document.getElementById('nextMonthBtn');
-                
-                if (prevBtn) {
-                    prevBtn.addEventListener('click', function() {
-                        navigateCoachCalendar(-1);
-                    });
-                }
-                
-                if (nextBtn) {
-                    nextBtn.addEventListener('click', function() {
-                        navigateCoachCalendar(1);
-                    });
-                }
+            }
+            
+            // Setup modal
+            const modalOverlay = document.getElementById('eventModalOverlay');
+            const eventModal = document.getElementById('eventModal');
+            const cancelModalBtn = document.getElementById('cancelModalBtn');
+            const modalForm = document.getElementById('modalEventForm');
+            
+            if (cancelModalBtn) {
+                cancelModalBtn.addEventListener('click', function() {
+                    modalOverlay.classList.remove('active');
+                    eventModal.classList.remove('active');
+                    modalForm.reset();
+                });
+            }
+            
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function() {
+                    modalOverlay.classList.remove('active');
+                    eventModal.classList.remove('active');
+                    modalForm.reset();
+                });
+            }
+            
+            if (modalForm) {
+                modalForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    saveModalEvent();
+                });
             }
         });
         
-        // ===== STUDENT FUNCTIONS =====
-        
-        let currentStudentMonth = new Date().getMonth();
-        let currentStudentYear = new Date().getFullYear();
-        
-        function initStudentCalendar() {
-            renderStudentCalendar(currentStudentMonth, currentStudentYear);
-            
-            // Setup navigation
-            const prevBtn = document.querySelector('.calendar-nav .btn-prev');
-            const nextBtn = document.querySelector('.calendar-nav .btn-next');
-            
-            if (prevBtn) {
-                prevBtn.addEventListener('click', function() {
-                    currentStudentMonth--;
-                    if (currentStudentMonth < 0) {
-                        currentStudentMonth = 11;
-                        currentStudentYear--;
-                    }
-                    renderStudentCalendar(currentStudentMonth, currentStudentYear);
-                });
-            }
-            
-            if (nextBtn) {
-                nextBtn.addEventListener('click', function() {
-                    currentStudentMonth++;
-                    if (currentStudentMonth > 11) {
-                        currentStudentMonth = 0;
-                        currentStudentYear++;
-                    }
-                    renderStudentCalendar(currentStudentMonth, currentStudentYear);
-                });
-            }
-        }
-        
-        function renderStudentCalendar(month, year) {
-            const calendarGrid = document.getElementById('studentCalendarGrid');
+        // Render calendar
+        function renderCalendar(month, year) {
+            const calendarGrid = document.getElementById('calendarGrid');
             if (!calendarGrid) return;
             
             const monthNames = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 
                         'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
             
-            const calendarTitle = calendarGrid.parentElement.querySelector('.calendar-title');
+            const calendarTitle = document.getElementById('calendarTitle');
             if (calendarTitle) {
                 calendarTitle.textContent = `${monthNames[month]} ${year}`;
             }
@@ -384,6 +447,25 @@
                     }
                 }
                 
+                // For coaches: check if any student has deadline on this date
+                if (isCoach() && user) {
+                    const myStudents = getStudentsForCoach(user.username);
+                    let hasStudentDeadline = false;
+                    myStudents.forEach(student => {
+                        if (student.challenges) {
+                            student.challenges.forEach(challenge => {
+                                if (challenge.deadline === dateStr) {
+                                    hasStudentDeadline = true;
+                                }
+                            });
+                        }
+                    });
+                    if (hasStudentDeadline) {
+                        dayElement.classList.add('has-event');
+                        dayElement.style.border = '2px solid var(--danger)';
+                    }
+                }
+                
                 const dayNumber = document.createElement('div');
                 dayNumber.className = 'calendar-day-number';
                 dayNumber.textContent = day;
@@ -403,11 +485,187 @@
                 }
                 
                 dayElement.appendChild(eventsList);
+                
+                // Add click handler to create event
+                dayElement.addEventListener('click', function() {
+                    selectedDate = dateStr;
+                    openEventModal(dateStr);
+                });
+                
                 calendarGrid.appendChild(dayElement);
             }
         }
         
-        function initStudentTodoList() {
+        // Open event modal
+        function openEventModal(dateStr) {
+            const modalDate = document.getElementById('modalDate');
+            const modalOverlay = document.getElementById('eventModalOverlay');
+            const eventModal = document.getElementById('eventModal');
+            
+            if (modalDate) {
+                modalDate.textContent = formatDateForDisplay(dateStr);
+            }
+            
+            if (modalOverlay && eventModal) {
+                modalOverlay.classList.add('active');
+                eventModal.classList.add('active');
+            }
+        }
+        
+        // Save modal event
+        function saveModalEvent() {
+            const user = getCurrentUser();
+            if (!user || !selectedDate) return;
+            
+            const title = document.getElementById('modal-event-title').value.trim();
+            const time = document.getElementById('modal-event-time').value;
+            const description = document.getElementById('modal-event-description').value.trim();
+            
+            if (!title) {
+                alert('Vul alstublieft een titel in');
+                return;
+            }
+            
+            const event = {
+                title,
+                date: selectedDate,
+                time: time || null,
+                description: description || null,
+                createdBy: user.username
+            };
+            
+            if (!user.agenda) {
+                user.agenda = [];
+            }
+            
+            user.agenda.push(event);
+            
+            // Save to localStorage
+            saveUserData(user.username, user);
+            
+            // Close modal
+            document.getElementById('eventModalOverlay').classList.remove('active');
+            document.getElementById('eventModal').classList.remove('active');
+            document.getElementById('modalEventForm').reset();
+            
+            // Reload calendar
+            renderCalendar(currentMonth, currentYear);
+            
+            alert('Event succesvol toegevoegd!');
+        }
+        
+        // Add event from form
+        function addEvent() {
+            const user = getCurrentUser();
+            if (!user) return;
+            
+            const title = document.getElementById('event-title').value.trim();
+            const date = document.getElementById('event-date').value;
+            const time = document.getElementById('event-time').value;
+            const description = document.getElementById('event-description').value.trim();
+            
+            if (!title || !date) {
+                alert('Vul alstublieft een titel en datum in');
+                return;
+            }
+            
+            // For coaches: handle sharing
+            if (isCoach()) {
+                const shareWithStudents = document.getElementById('shareWithStudents').checked;
+                const shareWithCoaches = document.getElementById('shareWithCoaches').checked;
+                
+                if (shareWithStudents || shareWithCoaches) {
+                    // Get selected students or class
+                    let studentUsernames = [];
+                    if (shareWithStudents) {
+                        const selectionMethod = document.querySelector('input[name="studentSelectionMethod"]:checked');
+                        if (!selectionMethod) {
+                            // Check if class is selected
+                            const classSelect = document.getElementById('selectClassToShare');
+                            if (classSelect && classSelect.value) {
+                                const classInfo = getAllClasses()[classSelect.value];
+                                if (classInfo) {
+                                    studentUsernames = classInfo.students;
+                                }
+                            } else {
+                                // Check if individual students are selected
+                                const studentsSelect = document.getElementById('selectStudentsToShare');
+                                if (studentsSelect) {
+                                    const selectedOptions = Array.from(studentsSelect.selectedOptions);
+                                    studentUsernames = selectedOptions.map(opt => opt.value);
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Add event to selected users
+                    if (studentUsernames.length > 0 || shareWithCoaches) {
+                        const event = {
+                            title: `[COACH] ${title}`,
+                            date: date,
+                            time: time || null,
+                            description: description || null,
+                            createdBy: user.username,
+                            isFromCoach: true
+                        };
+                        
+                        studentUsernames.forEach(username => {
+                            const student = users[username];
+                            if (student) {
+                                if (!student.agenda) {
+                                    student.agenda = [];
+                                }
+                                student.agenda.push(event);
+                                saveUserData(username, student);
+                            }
+                        });
+                        
+                        if (shareWithCoaches) {
+                            Object.keys(users).forEach(username => {
+                                if (users[username].role === 'coach' && username !== user.username) {
+                                    if (!users[username].agenda) {
+                                        users[username].agenda = [];
+                                    }
+                                    users[username].agenda.push(event);
+                                    saveUserData(username, users[username]);
+                                }
+                            });
+                        }
+                        
+                        alert(`Event "${title}" gedeeld met ${studentUsernames.length} leerling(en)${shareWithCoaches ? ' en andere coaches' : ''}!`);
+                    }
+                }
+            }
+            
+            // Add event to own agenda
+            const event = {
+                title,
+                date,
+                time: time || null,
+                description: description || null,
+                createdBy: user.username
+            };
+            
+            if (!user.agenda) {
+                user.agenda = [];
+            }
+            
+            user.agenda.push(event);
+            
+            // Save to localStorage
+            saveUserData(user.username, user);
+            
+            // Reset form
+            document.getElementById('addEventForm').reset();
+            
+            // Reload calendar
+            renderCalendar(currentMonth, currentYear);
+            
+            alert('Event succesvol toegevoegd!');
+        }
+        
+        // Initialize todo list
+        function initTodoList() {
             const addTodoBtn = document.getElementById('addTodoBtn');
             const addTodoForm = document.getElementById('addTodoForm');
             const cancelTodoBtn = document.getElementById('cancelTodoBtn');
@@ -446,7 +704,7 @@
             const user = getCurrentUser();
             if (!user) return;
             
-            const todoList = document.getElementById('studentTodoList');
+            const todoList = document.getElementById('todoList');
             if (!todoList) return;
             
             // Clear existing items
@@ -480,7 +738,7 @@
         }
         
         function addTodoItemToDOM(text, completed, index) {
-            const todoList = document.getElementById('studentTodoList');
+            const todoList = document.getElementById('todoList');
             if (!todoList) return;
             
             const todoItem = document.createElement('div');
@@ -549,215 +807,125 @@
             }
         }
         
-        function addPersonalEvent() {
-            const user = getCurrentUser();
-            if (!user || !isStudent()) return;
+        // Setup coach event form
+        function setupCoachEventForm() {
+            const audienceSelect = document.getElementById('coach-event-audience');
+            const individualGroup = document.getElementById('coach-individual-students-group');
+            const classGroup = document.getElementById('coach-class-group');
+            const eventForm = document.getElementById('addEventToStudentsForm');
+            const resultDiv = document.getElementById('eventAssignmentResult');
             
-            const title = document.getElementById('event-title').value.trim();
-            const date = document.getElementById('event-date').value;
-            const time = document.getElementById('event-time').value;
-            const description = document.getElementById('event-description').value.trim();
+            if (audienceSelect) {
+                audienceSelect.addEventListener('change', function() {
+                    if (this.value === 'individual') {
+                        individualGroup.style.display = 'block';
+                        classGroup.style.display = 'none';
+                    } else if (this.value === 'class') {
+                        individualGroup.style.display = 'none';
+                        classGroup.style.display = 'block';
+                    } else {
+                        individualGroup.style.display = 'none';
+                        classGroup.style.display = 'none';
+                    }
+                });
+            }
+            
+            if (eventForm) {
+                eventForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addEventToStudents();
+                });
+            }
+        }
+        
+        // Add event to students (coach only)
+        function addEventToStudents() {
+            const user = getCurrentUser();
+            if (!user || !isCoach()) return;
+            
+            const title = document.getElementById('coach-event-title').value.trim();
+            const date = document.getElementById('coach-event-date').value;
+            const time = document.getElementById('coach-event-time').value;
+            const description = document.getElementById('coach-event-description').value.trim();
+            const audience = document.getElementById('coach-event-audience').value;
+            const resultDiv = document.getElementById('eventAssignmentResult');
             
             if (!title || !date) {
                 alert('Vul alstublieft een titel en datum in');
                 return;
             }
             
-            const event = {
-                title,
-                date,
-                time: time || null,
-                description: description || null,
-                createdBy: user.username
-            };
+            let studentUsernames = [];
             
-            if (!user.agenda) {
-                user.agenda = [];
+            if (audience === 'individual') {
+                const studentsSelect = document.getElementById('coach-event-students');
+                const selectedOptions = Array.from(studentsSelect.selectedOptions);
+                if (selectedOptions.length === 0) {
+                    alert('Selecteer alstublieft minimaal één leerling');
+                    return;
+                }
+                studentUsernames = selectedOptions.map(opt => opt.value);
+            } else if (audience === 'class') {
+                const classSelect = document.getElementById('coach-event-class');
+                const classId = classSelect.value;
+                if (!classId) {
+                    alert('Selecteer alstublieft een klas');
+                    return;
+                }
+                const classInfo = getAllClasses()[classId];
+                if (classInfo) {
+                    studentUsernames = classInfo.students;
+                }
+            } else if (audience === 'myclass') {
+                const myStudents = getStudentsForCoach(user.username);
+                studentUsernames = myStudents.map(s => s.username);
+            } else if (audience === 'all') {
+                const allStudents = getAllStudents();
+                studentUsernames = allStudents.map(s => s.username);
             }
             
-            user.agenda.push(event);
-            
-            // Save to localStorage
-            saveUserData(user.username, user);
-            
-            // Reset form
-            document.getElementById('addPersonalEventForm').reset();
-            
-            // Reload calendar
-            initStudentCalendar();
-            
-            alert('Event succesvol toegevoegd!');
-        }
-        
-        function loadStudentDeadlines() {
-            const user = getCurrentUser();
-            if (!user || !isStudent()) return;
-            
-            const deadlinesGrid = document.getElementById('studentDeadlines');
-            if (!deadlinesGrid) return;
-            
-            deadlinesGrid.innerHTML = '';
-            
-            // Get challenges with deadlines
-            const challengesWithDeadlines = (user.challenges || []).filter(c => c.deadline);
-            
-            if (challengesWithDeadlines.length === 0) {
-                deadlinesGrid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Geen challenge deadlines gevonden</p>';
+            if (studentUsernames.length === 0) {
+                alert('Geen leerlingen geselecteerd');
                 return;
             }
             
-            // Sort by deadline
-            challengesWithDeadlines.sort((a, b) => {
-                return new Date(a.deadline) - new Date(b.deadline);
-            });
+            // Add event to each student's agenda
+            const event = {
+                title: `[COACH] ${title}`,
+                date: date,
+                time: time || null,
+                description: description || null,
+                createdBy: user.username,
+                isFromCoach: true
+            };
             
-            challengesWithDeadlines.forEach(challenge => {
-                addDeadlineToDOM(challenge, deadlinesGrid);
-            });
-        }
-        
-        function addDeadlineToDOM(challenge, grid) {
-            const card = document.createElement('div');
-            card.className = 'challenge-card';
-            
-            const title = document.createElement('h3');
-            title.className = 'challenge-title';
-            title.textContent = challenge.title;
-            
-            const meta = document.createElement('div');
-            meta.className = 'challenge-meta';
-            
-            const deadline = document.createElement('span');
-            deadline.innerHTML = `<i class="fas fa-calendar"></i> Deadline: ${formatDateForDisplay(challenge.deadline)}`;
-            
-            const status = document.createElement('span');
-            status.innerHTML = `<i class="fas fa-circle"></i> ${challenge.status || 'actief'}`;
-            
-            meta.appendChild(deadline);
-            meta.appendChild(status);
-            
-            const description = document.createElement('p');
-            description.className = 'challenge-description';
-            description.textContent = challenge.description || 'Geen beschrijving';
-            
-            card.appendChild(title);
-            card.appendChild(meta);
-            card.appendChild(description);
-            
-            grid.appendChild(card);
-        }
-        
-        // ===== COACH FUNCTIONS =====
-        
-        let currentCoachMonth = new Date().getMonth();
-        let currentCoachYear = new Date().getFullYear();
-        
-        function loadCoachDeadlinesCalendar() {
-            renderCoachDeadlinesCalendar(currentCoachMonth, currentCoachYear);
-        }
-        
-        function renderCoachDeadlinesCalendar(month, year) {
-            const calendarDiv = document.getElementById('coachDeadlinesCalendar');
-            if (!calendarDiv) return;
-            
-            const monthNames = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 
-                        'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
-            
-            const calendarTitle = calendarDiv.parentElement.querySelector('h2');
-            if (calendarTitle) {
-                calendarTitle.textContent = `${monthNames[month]} ${year} - Deadlines van Mijn Leerlingen`;
-            }
-            
-            // Clear existing content
-            calendarDiv.innerHTML = '';
-            
-            // Get all deadlines for coach's students
-            const coach = getCurrentUser();
-            if (!coach || !isCoach()) return;
-            
-            const myStudents = getStudentsForCoach(coach.username);
-            const allDeadlines = [];
-            
-            myStudents.forEach(student => {
-                if (student.challenges) {
-                    student.challenges.forEach(challenge => {
-                        if (challenge.deadline) {
-                            allDeadlines.push({
-                                date: challenge.deadline,
-                                title: challenge.title,
-                                studentName: student.name,
-                                studentUsername: student.username,
-                                challengeId: challenge.id
-                            });
-                        }
-                    });
+            let assignedCount = 0;
+            studentUsernames.forEach(username => {
+                const student = users[username];
+                if (student) {
+                    if (!student.agenda) {
+                        student.agenda = [];
+                    }
+                    student.agenda.push(event);
+                    saveUserData(username, student);
+                    assignedCount++;
                 }
             });
             
-            // Group by date
-            const deadlinesByDate = {};
-            allDeadlines.forEach(deadline => {
-                if (!deadlinesByDate[deadline.date]) {
-                    deadlinesByDate[deadline.date] = [];
-                }
-                deadlinesByDate[deadline.date].push(deadline);
-            });
-            
-            // Create a card for each date with deadlines
-            Object.keys(deadlinesByDate).forEach(dateStr => {
-                const date = new Date(dateStr);
-                if (date.getMonth() === month && date.getFullYear() === year) {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.background = '#FFF8F8';
-                    card.style.borderLeft = '4px solid var(--danger)';
-                    
-                    const dateHeader = document.createElement('div');
-                    dateHeader.style.fontWeight = 'bold';
-                    dateHeader.style.color = 'var(--danger)';
-                    dateHeader.style.marginBottom = '10px';
-                    dateHeader.textContent = formatDateForDisplay(dateStr);
-                    
-                    const deadlinesList = document.createElement('ul');
-                    deadlinesList.style.listStyle = 'none';
-                    deadlinesList.style.padding = '0';
-                    
-                    deadlinesByDate[dateStr].forEach(deadline => {
-                        const li = document.createElement('li');
-                        li.style.padding = '5px 0';
-                        li.style.borderBottom = '1px solid #EEE';
-                        li.style.display = 'flex';
-                        li.style.justifyContent = 'space-between';
-                        li.innerHTML = `
-                            <span><strong>${deadline.studentName}</strong>: ${deadline.title}</span>
-                            <span style="color: var(--text-light); font-size: 12px;">${deadline.studentUsername}</span>
-                        `;
-                        deadlinesList.appendChild(li);
-                    });
-                    
-                    card.appendChild(dateHeader);
-                    card.appendChild(deadlinesList);
-                    calendarDiv.appendChild(card);
-                }
-            });
-            
-            if (Object.keys(deadlinesByDate).length === 0) {
-                calendarDiv.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 20px;">Geen deadlines gevonden voor deze maand</p>';
+            if (resultDiv) {
+                resultDiv.textContent = `Event "${title}" toegevoegd aan ${assignedCount} leerling(en)`;
+                resultDiv.style.background = '#D4EDDA';
+                resultDiv.style.color = '#155724';
+                resultDiv.style.display = 'block';
             }
+            
+            // Reset form
+            document.getElementById('addEventToStudentsForm').reset();
+            
+            alert(`Event succesvol toegevoegd aan ${assignedCount} leerling(en)!`);
         }
         
-        function navigateCoachCalendar(delta) {
-            currentCoachMonth += delta;
-            if (currentCoachMonth < 0) {
-                currentCoachMonth = 11;
-                currentCoachYear--;
-            } else if (currentCoachMonth > 11) {
-                currentCoachMonth = 0;
-                currentCoachYear++;
-            }
-            renderCoachDeadlinesCalendar(currentCoachMonth, currentCoachYear);
-        }
-        
+        // Load coach deadlines list
         function loadCoachDeadlinesList() {
             const deadlinesList = document.getElementById('coachDeadlinesList');
             if (!deadlinesList) return;
@@ -824,112 +992,6 @@
             });
         }
         
-        function updateCoachEventForm() {
-            const audience = document.getElementById('coach-event-audience');
-            const individualGroup = document.getElementById('coach-individual-students-group');
-            const classGroup = document.getElementById('coach-class-group');
-            
-            if (!audience || !individualGroup || !classGroup) return;
-            
-            individualGroup.style.display = 'none';
-            classGroup.style.display = 'none';
-            
-            if (audience.value === 'individual') {
-                individualGroup.style.display = 'block';
-            } else if (audience.value === 'class') {
-                classGroup.style.display = 'block';
-            }
-        }
-        
-        function addEventToStudents() {
-            const user = getCurrentUser();
-            if (!user || !isCoach()) return;
-            
-            const title = document.getElementById('coach-event-title').value.trim();
-            const date = document.getElementById('coach-event-date').value;
-            const time = document.getElementById('coach-event-time').value;
-            const description = document.getElementById('coach-event-description').value.trim();
-            const audience = document.getElementById('coach-event-audience').value;
-            const resultDiv = document.getElementById('eventAssignmentResult');
-            
-            if (!title || !date) {
-                alert('Vul alstublieft een titel en datum in');
-                return;
-            }
-            
-            let studentUsernames = [];
-            
-            if (audience === 'individual') {
-                const studentsSelect = document.getElementById('coach-event-students');
-                const selectedOptions = Array.from(studentsSelect.selectedOptions);
-                if (selectedOptions.length === 0) {
-                    alert('Selecteer alstublieft minimaal één leerling');
-                    return;
-                }
-                studentUsernames = selectedOptions.map(opt => opt.value);
-            } else if (audience === 'class') {
-                const classSelect = document.getElementById('coach-event-class');
-                const classId = classSelect.value;
-                if (!classId) {
-                    alert('Selecteer alstublieft een klas');
-                    return;
-                }
-                const classInfo = getAllClasses()[classId];
-                if (classInfo) {
-                    studentUsernames = classInfo.students;
-                }
-            } else if (audience === 'myclass') {
-                // Get all students in coach's classes
-                const myStudents = getStudentsForCoach(user.username);
-                studentUsernames = myStudents.map(s => s.username);
-            } else if (audience === 'all') {
-                // All students
-                const allStudents = getAllStudents();
-                studentUsernames = allStudents.map(s => s.username);
-            }
-            
-            if (studentUsernames.length === 0) {
-                alert('Geen leerlingen geselecteerd');
-                return;
-            }
-            
-            // Add event to each student's agenda
-            const event = {
-                title: `[COACH] ${title}`,
-                date: date,
-                time: time || null,
-                description: description || null,
-                createdBy: user.username,
-                isFromCoach: true
-            };
-            
-            let assignedCount = 0;
-            studentUsernames.forEach(username => {
-                const student = users[username];
-                if (student) {
-                    if (!student.agenda) {
-                        student.agenda = [];
-                    }
-                    student.agenda.push(event);
-                    saveUserData(username, student);
-                    assignedCount++;
-                }
-            });
-            
-            if (resultDiv) {
-                resultDiv.textContent = `Event "${title}" toegevoegd aan ${assignedCount} leerling(en)`;
-                resultDiv.style.background = '#D4EDDA';
-                resultDiv.style.color = '#155724';
-                resultDiv.style.display = 'block';
-            }
-            
-            // Reset form
-            document.getElementById('addEventToStudentsForm').reset();
-            updateCoachEventForm();
-            
-            alert(`Event succesvol toegevoegd aan ${assignedCount} leerling(en)!`);
-        }
-        
         // Get students for a specific coach
         function getStudentsForCoach(coachUsername) {
             const coach = users[coachUsername];
@@ -949,8 +1011,7 @@
             return students;
         }
         
-        // ===== UTILITY FUNCTIONS =====
-        
+        // Utility functions
         function formatDate(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -961,33 +1022,6 @@
         function formatDateForDisplay(dateStr) {
             const [year, month, day] = dateStr.split('-');
             return `${day}-${month}-${year}`;
-        }
-        
-        function showDayEvents(date) {
-            const user = getCurrentUser();
-            if (!user) {
-                alert('Je moet ingelogd zijn om events te bekijken');
-                return;
-            }
-            
-            const dayEvents = user.agenda.filter(event => event.date === date);
-            
-            if (dayEvents.length === 0) {
-                alert(`Geen events op ${formatDateForDisplay(date)}`);
-                return;
-            }
-            
-            let message = `Events op ${formatDateForDisplay(date)}:\n\n`;
-            dayEvents.forEach(event => {
-                const timeStr = event.time ? ` om ${event.time}` : '';
-                const fromCoach = event.isFromCoach ? ' (van coach)' : '';
-                message += `- ${event.title}${timeStr}${fromCoach}\n`;
-                if (event.description) {
-                    message += `  ${event.description}\n`;
-                }
-            });
-            
-            alert(message);
         }
     </script>
 </body>

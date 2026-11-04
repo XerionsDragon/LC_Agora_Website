@@ -178,7 +178,7 @@ function login(username, password) {
  */
 function logout() {
     localStorage.removeItem('agora_currentUser');
-    window.location.href = 'login.html';
+    window.location.href = '/LC_Agora_Website/login.html';
 }
 
 /**

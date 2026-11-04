@@ -25,6 +25,7 @@
             <div class="login-input-group">
                 <i class="fas fa-lock"></i>
                 <input type="password" id="password" placeholder="Wachtwoord" required>
+                <i class="fas fa-eye password-toggle" id="togglePassword" style="cursor: pointer; position: absolute; right: 15px; top: 50%; transform: translateY(-50%);"></i>
             </div>
             
             <div class="login-options">
@@ -44,8 +45,13 @@
                 <i class="fas fa-info-circle"></i> Gebruik een van de volgende accounts om in te loggen:
             </p>
             <ul style="text-align: left; display: inline-block; margin-top: 10px; color: var(--text-light); font-size: 14px;">
-                <li><strong>Coaches:</strong> coach1 / Agora2024! of coach2 / Agora2024!</li>
-                <li><strong>Leerlingen:</strong> leerling1-5 / TempPass123-112</li>
+                <li><strong>Coaches:</strong> coach1 / Agora2024! &nbsp;&nbsp; coach2 / Agora2024!</li>
+                <li><strong>Leerlingen:</strong></li>
+                <li style="margin-left: 20px;">leerling1 / TempPass123</li>
+                <li style="margin-left: 20px;">leerling2 / TempPass456</li>
+                <li style="margin-left: 20px;">leerling3 / TempPass789</li>
+                <li style="margin-left: 20px;">leerling4 / TempPass101</li>
+                <li style="margin-left: 20px;">leerling5 / TempPass112</li>
             </ul>
         </div>
     </div>
@@ -56,6 +62,32 @@
             const loginForm = document.getElementById('loginForm');
             const passwordChangeNotice = document.getElementById('passwordChangeNotice');
             const resetPasswordLink = document.getElementById('resetPasswordLink');
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            
+            if (togglePassword && passwordInput) {
+                let isPasswordVisible = false;
+                togglePassword.addEventListener('mousedown', function() {
+                    passwordInput.type = 'text';
+                    togglePassword.classList.remove('fa-eye');
+                    togglePassword.classList.add('fa-eye-slash');
+                    isPasswordVisible = true;
+                });
+                togglePassword.addEventListener('mouseup', function() {
+                    passwordInput.type = 'password';
+                    togglePassword.classList.remove('fa-eye-slash');
+                    togglePassword.classList.add('fa-eye');
+                    isPasswordVisible = false;
+                });
+                togglePassword.addEventListener('mouseleave', function() {
+                    if (isPasswordVisible) {
+                        passwordInput.type = 'password';
+                        togglePassword.classList.remove('fa-eye-slash');
+                        togglePassword.classList.add('fa-eye');
+                        isPasswordVisible = false;
+                    }
+                });
+            }
             
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
