@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspiratie - LC Agora</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span>LC Agora</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="agenda.html">Agenda</a></li>
+                    <li><a href="forum.html">Forum</a></li>
+                    <li><a href="challenges.html">Challenges</a></li>
+                    <li><a href="workshops.html">Workshops</a></li>
+                    <li><a href="inspiratie.html" class="active">Inspiratie</a></li>
+                    <li><a href="#" class="coach-only">Beheer</a></li>
+                </ul>
+            </nav>
+            <div class="user-info logout-link">
+                <span class="user-name"></span>
+                <span class="user-role" style="font-size: 14px; opacity: 0.8;"></span>
+                <button class="logout-btn">Uitloggen</button>
+            </div>
+            <div class="login-link">
+                <a href="../login.html" class="btn btn-outline" style="color: white; border-color: white;">Inloggen</a>
+            </div>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="container">
+            <h1 class="page-title">Inspiratie</h1>
+            
+            <div class="card fade-in">
+                <p style="text-align: center; color: var(--text-dark); font-size: 18px; margin-bottom: 20px;">
+                    <i class="fas fa-lightbulb"></i> 
+                    Bekijk openbare challenges van andere leerlingen en laat je inspireren!
+                </p>
+                <p style="text-align: center; color: var(--text-light); margin-bottom: 30px;">
+                    Kopieer een challenge naar je eigen account en pas deze aan met je eigen invulling.
+                </p>
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <input type="text" placeholder="Zoeken op titel of beschrijving..." style="width: 100%; padding: 12px; border: 2px solid #DDD; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <select style="padding: 12px; border: 2px solid #DDD; border-radius: 8px;">
+                            <option value="">Alle categorieën</option>
+                            <option value="challenge">Challenges</option>
+                            <option value="workshop">Workshops</option>
+                            <option value="project">Projecten</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-search"></i> Zoeken
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inspiration-grid" id="inspirationGrid"></div>
+            
+            <div class="card fade-in mt-4">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-star"></i> Uitgelichte Challenges
+                </h2>
+                <p style="color: var(--text-light); margin-bottom: 15px;">
+                    Deze challenges zijn speciaal geselecteerd door coaches als voorbeeldprojecten.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: var(--box-shadow);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-recycle"></i> Duurzaamheid in de Buurt
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 10px;">
+                            <strong>Door:</strong> leerling2
+                        </p>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 15px;">
+                            Een challenge gericht op het verbeteren van de duurzaamheid in de lokale gemeenschap.
+                        </p>
+                        <div style="display: flex; gap: 10px;">
+                            <span style="background: var(--primary-light); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Duurzaamheid</span>
+                            <span style="background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Gemeenschap</span>
+                        </div>
+                        <button class="btn btn-outline mt-2" style="width: 100%;">
+                            <i class="fas fa-copy"></i> Kopieer naar mijn challenges
+                        </button>
+                    </div>
+                    <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: var(--box-shadow);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-code"></i> Website Bouwen
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 10px;">
+                            <strong>Door:</strong> leerling3
+                        </p>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 15px;">
+                            Ontwerp en bouw een complete website voor een lokaal bedrijf.
+                        </p>
+                        <div style="display: flex; gap: 10px;">
+                            <span style="background: var(--primary-light); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Techniek</span>
+                            <span style="background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Webdevelopment</span>
+                        </div>
+                        <button class="btn btn-outline mt-2" style="width: 100%;">
+                            <i class="fas fa-copy"></i> Kopieer naar mijn challenges
+                        </button>
+                    </div>
+                    <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: var(--box-shadow);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-book"></i> Kinderen Leren Lezen
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 10px;">
+                            <strong>Door:</strong> leerling1
+                        </p>
+                        <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 15px;">
+                            Ontwikkel een programma om jonge kinderen te helpen met lezen.
+                        </p>
+                        <div style="display: flex; gap: 10px;">
+                            <span style="background: var(--primary-light); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Onderwijs</span>
+                            <span style="background: var(--secondary-color); color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px;">Maatschappij</span>
+                        </div>
+                        <button class="btn btn-outline mt-2" style="width: 100%;">
+                            <i class="fas fa-copy"></i> Kopieer naar mijn challenges
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card fade-in mt-4">
+                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+                    <i class="fas fa-tips"></i> Tips voor het Maken van Goede Challenges
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-target"></i> Duidelijk Doel
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px;">
+                            Zorg voor een duidelijk en meetbaar doel.
+                        </p>
+                    </div>
+                    <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary-color);">
+                        <h3 style="color: var(--secondary-color); margin-bottom: 10px;">
+                            <i class="fas fa-question-circle"></i> Goede Vragen
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px;">
+                            Stel uitdagende hoofd- en deelvragen.
+                        </p>
+                    </div>
+                    <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent-color);">
+                        <h3 style="color: var(--accent-color); margin-bottom: 10px;">
+                            <i class="fas fa-users"></i> Samenwerking
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px;">
+                            Werk samen met klasgenoten.
+                        </p>
+                    </div>
+                    <div style="background: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 4px solid var(--success);">
+                        <h3 style="color: var(--success); margin-bottom: 10px;">
+                            <i class="fas fa-share-alt"></i> Deel je Werk
+                        </h3>
+                        <p style="color: var(--text-dark); font-size: 14px;">
+                            Maak je challenge openbaar.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="../js/auth.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
