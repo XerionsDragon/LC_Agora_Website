@@ -225,7 +225,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     // Check if user needs to change password
-    if (isLoggedIn() && window.location.pathname !== '/LC_Agora_Website/change-password.html') {
+    if (isLoggedIn()) {
         checkFirstLogin();
     }
     
