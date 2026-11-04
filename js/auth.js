@@ -1,5 +1,21 @@
 // ===== AUTHENTICATION SYSTEM =====
 
+// Classes structure
+const classes = {
+    'klasse1': {
+        name: 'Klas 1',
+        students: ['leerling1', 'leerling2']
+    },
+    'klasse2': {
+        name: 'Klas 2',
+        students: ['leerling3', 'leerling4']
+    },
+    'klasse3': {
+        name: 'Klas 3',
+        students: ['leerling5']
+    }
+};
+
 // User database (in a real app, this would be a backend database)
 const users = {
     // Coaches
@@ -10,7 +26,8 @@ const users = {
         name: 'Mevr. Jensen',
         firstLogin: false,
         challenges: [],
-        workshops: []
+        workshops: [],
+        classes: ['klasse1', 'klasse2', 'klasse3']
     },
     'coach2': { 
         username: 'coach2', 
@@ -19,7 +36,8 @@ const users = {
         name: 'Dhr. Bakker',
         firstLogin: false,
         challenges: [],
-        workshops: []
+        workshops: [],
+        classes: ['klasse1', 'klasse2']
     },
     
     // Leerlingen (students)
@@ -31,7 +49,8 @@ const users = {
         firstLogin: true,
         challenges: [],
         agenda: [],
-        todo: []
+        todo: [],
+        class: 'klasse1'
     },
     'leerling2': { 
         username: 'leerling2', 
@@ -41,7 +60,8 @@ const users = {
         firstLogin: true,
         challenges: [],
         agenda: [],
-        todo: []
+        todo: [],
+        class: 'klasse1'
     },
     'leerling3': { 
         username: 'leerling3', 
@@ -51,7 +71,8 @@ const users = {
         firstLogin: true,
         challenges: [],
         agenda: [],
-        todo: []
+        todo: [],
+        class: 'klasse2'
     },
     'leerling4': { 
         username: 'leerling4', 
@@ -61,7 +82,8 @@ const users = {
         firstLogin: true,
         challenges: [],
         agenda: [],
-        todo: []
+        todo: [],
+        class: 'klasse2'
     },
     'leerling5': { 
         username: 'leerling5', 
@@ -71,9 +93,40 @@ const users = {
         firstLogin: true,
         challenges: [],
         agenda: [],
-        todo: []
+        todo: [],
+        class: 'klasse3'
     }
 };
+
+// Predefined challenge templates for coaches
+const challengeTemplates = [
+    {
+        id: 'template1',
+        title: 'Onderzoekproject',
+        description: 'Voer een onderzoek uit naar een zelfgekozen onderwerp.',
+        mainQuestion: 'Hoe los ik dit onderzoeksvraagstuk op?',
+        subQuestions: [
+            'Wat is de hoofdvraag?',
+            'Welke deelvragen zijn nodig?',
+            'Hoe verzamel ik data?',
+            'Hoe analyseer ik de resultaten?'
+        ],
+        isTemplate: true
+    },
+    {
+        id: 'template2',
+        title: 'Praktijkopdracht',
+        description: 'Maak een praktisch product of dienst.',
+        mainQuestion: 'Hoe maak ik dit product?',
+        subQuestions: [
+            'Welke materialen heb ik nodig?',
+            'Wat zijn de stappen?',
+            'Hoe test ik het resultaat?',
+            'Hoe presenteer ik het?'
+        ],
+        isTemplate: true
+    }
+];
 
 // ===== AUTH FUNCTIONS =====
 
@@ -200,6 +253,64 @@ function isCoach() {
 function isStudent() {
     const user = getCurrentUser();
     return user && user.role === 'student';
+}
+
+/**
+ * Get all students
+ */
+function getAllStudents() {
+    return Object.values(users).filter(u => u.role === 'student');
+}
+
+/**
+ * Get all classes
+ */
+function getAllClasses() {
+    return classes;
+}
+
+/**
+ * Get students in a specific class
+ */
+function getStudentsInClass(classId) {
+    const classInfo = classes[classId];
+    if (!classInfo) return [];
+    return classInfo.students.map(username => users[username]).filter(u => u);
+}
+
+/**
+ * Assign challenge to students
+ */
+function assignChallengeToStudents(coachUsername, challenge, studentUsernames) {
+    const coach = users[coachUsername];
+    if (!coach || coach.role !== 'coach') {
+        return { success: false, message: 'Alleen coaches kunnen challenges toewijzen' };
+    }
+    
+    let assignedCount = 0;
+    studentUsernames.forEach(username => {
+        const student = users[username];
+        if (student && student.role === 'student') {
+            if (!student.challenges) {
+                student.challenges = [];
+            }
+            const studentChallenge = {
+                ...challenge,
+                id: Date.now() + Math.random(),
+                assignedBy: coachUsername,
+                assignedAt: new Date().toISOString(),
+                participants: [username]
+            };
+            student.challenges.push(studentChallenge);
+            assignedCount++;
+        }
+    });
+    
+    return { 
+        success: true, 
+        message: `Challenge toegewezen aan ${assignedCount} leerling(en)`,
+        assignedCount 
+    };
 }
 
 // ===== INITIALIZE AUTH STATE =====

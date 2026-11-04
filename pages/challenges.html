@@ -41,8 +41,8 @@
         <div class="container">
             <h1 class="page-title">Challenges</h1>
             
-            <!-- My Challenges -->
-            <div class="card fade-in">
+            <!-- For Students: My Challenges -->
+            <div class="card fade-in student-only">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h2 style="color: var(--primary-color);">
                         <i class="fas fa-user"></i> Mijn Challenges
@@ -57,126 +57,794 @@
                 </div>
             </div>
             
-            <!-- New Challenge Form (hidden by default) -->
-            <div class="card fade-in hidden" id="newChallengeCard">
-                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
-                    <i class="fas fa-plus-circle"></i> Nieuwe Challenge aanmaken
-                </h2>
-                <form class="new-challenge-form">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                        <div class="form-group">
-                            <label for="challenge-title">Titel *</label>
-                            <input type="text" id="challenge-title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="challenge-deadline">Deadline</label>
-                            <input type="date" id="challenge-deadline">
-                        </div>
-                        <div class="form-group">
-                            <label for="challenge-main-question">Hoofdvraag *</label>
-                            <input type="text" id="challenge-main-question" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="challenge-status">Status</label>
-                            <select id="challenge-status">
-                                <option value="active">Actief</option>
-                                <option value="completed">Afgerond</option>
-                                <option value="paused">Gepauzeerd</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="challenge-description">Beschrijving</label>
-                            <textarea id="challenge-description" rows="4"></textarea>
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="challenge-sub-questions">Deelvragen (één per regel)</label>
-                            <textarea id="challenge-sub-questions" rows="4" placeholder="Bijv: Wat is het probleem?&#10;Hoe kunnen we dit oplossen?&#10;Wat zijn de stappen?"></textarea>
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="challenge-participants">Deelnemers (gescheiden door komma's)</label>
-                            <input type="text" id="challenge-participants" placeholder="leerling1, leerling2">
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label>
-                                <input type="checkbox" id="challenge-public"> 
-                                Openbaar maken (zichtbaar in Inspiratie)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Challenge opslaan
-                        </button>
-                        <button type="button" class="btn btn-danger" id="cancelChallengeBtn">
-                            <i class="fas fa-times"></i> Annuleren
-                        </button>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Shared Challenges (for students) -->
+            <!-- For Students: Shared Challenges -->
             <div class="card fade-in student-only">
                 <h2 style="color: var(--primary-color); margin-bottom: 20px;">
-                    <i class="fas fa-users"></i> Gedeelde Challenges
+                    <i class="fas fa-users"></i> Gedeelde Challenges (van coaches)
                 </h2>
                 <div class="challenge-grid" id="sharedChallengesGrid">
                     <!-- Shared challenges will be loaded here -->
                 </div>
             </div>
             
-            <!-- All Challenges (for coaches) -->
+            <!-- For Coaches: Challenge Management -->
             <div class="card fade-in coach-only">
-                <h2 style="color: var(--primary-color); margin-bottom: 20px;">
-                    <i class="fas fa-chalkboard-teacher"></i> Alle Challenges (Coach View)
-                </h2>
-                <div style="margin-bottom: 15px;">
-                    <button class="btn btn-secondary" id="createChallengeForStudentsBtn">
-                        <i class="fas fa-plus"></i> Challenge voor leerlingen aanmaken
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: var(--primary-color);">
+                        <i class="fas fa-chalkboard-teacher"></i> Challenges Beheren
+                    </h2>
+                    <button class="btn btn-primary" id="createTemplateChallengeBtn">
+                        <i class="fas fa-plus"></i> Nieuwe Challenge Sjabloon
                     </button>
                 </div>
-                <div class="challenge-grid" id="allChallengesGrid">
-                    <!-- All challenges will be loaded here -->
+                
+                <!-- Challenge Templates Section -->
+                <div id="challengeTemplatesSection">
+                    <h3 style="color: var(--secondary-color); margin-bottom: 15px;">
+                        <i class="fas fa-file-alt"></i> Mijn Challenge Sjablonen
+                    </h3>
+                    <div class="challenge-grid" id="templateChallengesGrid">
+                        <!-- Template challenges will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Assign Challenge Section -->
+                <div class="mt-4" style="border-top: 2px solid #EEE; padding-top: 20px;">
+                    <h3 style="color: var(--secondary-color); margin-bottom: 15px;">
+                        <i class="fas fa-paper-plane"></i> Challenge Toewijzen aan Leerlingen
+                    </h3>
+                    <div class="form-group">
+                        <label>Selecteer een sjabloon:</label>
+                        <select id="selectTemplateForAssignment" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
+                            <option value="">-- Kies een sjabloon --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Selecteer leerlingen of klas:</label>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <select id="studentSelectionMethod" style="padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
+                                <option value="individual">Individuele leerlingen</option>
+                                <option value="class">Hele klas</option>
+                            </select>
+                        </div>
+                        <div id="individualStudentsDiv" style="display: none;">
+                            <select id="selectStudents" multiple style="width: 100%; height: 150px; padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
+                                <option value="leerling1">Lars de Vries (Klas 1)</option>
+                                <option value="leerling2">Emma van Dijk (Klas 1)</option>
+                                <option value="leerling3">Sem van der Meer (Klas 2)</option>
+                                <option value="leerling4">Sophie Kuiper (Klas 2)</option>
+                                <option value="leerling5">Daan van Leeuwen (Klas 3)</option>
+                            </select>
+                        </div>
+                        <div id="classSelectionDiv" style="display: block;">
+                            <select id="selectClass" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #DDD;">
+                                <option value="">-- Kies een klas --</option>
+                                <option value="klasse1">Klas 1 (2 leerlingen)</option>
+                                <option value="klasse2">Klas 2 (2 leerlingen)</option>
+                                <option value="klasse3">Klas 3 (1 leerling)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" id="assignChallengeBtn" style="margin-top: 10px;">
+                        <i class="fas fa-paper-plane"></i> Toewijzen aan Geselecteerde
+                    </button>
+                    <div id="assignResult" style="margin-top: 15px; padding: 10px; border-radius: 8px; display: none;"></div>
+                </div>
+                
+                <!-- All Challenges View -->
+                <div class="mt-4" style="border-top: 2px solid #EEE; padding-top: 20px;">
+                    <h3 style="color: var(--secondary-color); margin-bottom: 15px;">
+                        <i class="fas fa-list"></i> Alle Toegewezen Challenges
+                    </h3>
+                    <div class="challenge-grid" id="allChallengesGrid">
+                        <!-- All assigned challenges will be loaded here -->
+                    </div>
                 </div>
             </div>
         </div>
     </main>
     
+    <!-- New Challenge Form for Students (hidden by default) -->
+    <div class="card fade-in hidden" id="newChallengeCard" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; max-width: 600px; width: 90%;">
+        <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+            <i class="fas fa-plus-circle"></i> Nieuwe Challenge aanmaken
+        </h2>
+        <form class="new-challenge-form">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div class="form-group">
+                    <label for="challenge-title">Titel *</label>
+                    <input type="text" id="challenge-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="challenge-deadline">Deadline</label>
+                    <input type="date" id="challenge-deadline">
+                </div>
+                <div class="form-group">
+                    <label for="challenge-main-question">Hoofdvraag *</label>
+                    <input type="text" id="challenge-main-question" required>
+                </div>
+                <div class="form-group">
+                    <label for="challenge-status">Status</label>
+                    <select id="challenge-status">
+                        <option value="active">Actief</option>
+                        <option value="completed">Afgerond</option>
+                        <option value="paused">Gepauzeerd</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="challenge-description">Beschrijving</label>
+                    <textarea id="challenge-description" rows="4"></textarea>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="challenge-sub-questions">Deelvragen (één per regel)</label>
+                    <textarea id="challenge-sub-questions" rows="4" placeholder="Bijv: Wat is het probleem?&#10;Hoe kunnen we dit oplossen?&#10;Wat zijn de stappen?"></textarea>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="challenge-participants">Deelnemers (gescheiden door komma's)</label>
+                    <input type="text" id="challenge-participants" placeholder="leerling1, leerling2">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>
+                        <input type="checkbox" id="challenge-public"> 
+                        Openbaar maken (zichtbaar in Inspiratie)
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Challenge opslaan
+                </button>
+                <button type="button" class="btn btn-danger" id="cancelChallengeBtn">
+                    <i class="fas fa-times"></i> Annuleren
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Create Template Challenge Form for Coaches (hidden by default) -->
+    <div class="card fade-in hidden" id="createTemplateCard" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; max-width: 600px; width: 90%;">
+        <h2 style="color: var(--primary-color); margin-bottom: 20px;">
+            <i class="fas fa-file-alt"></i> Nieuwe Challenge Sjabloon
+        </h2>
+        <form class="new-template-form">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div class="form-group">
+                    <label for="template-title">Titel *</label>
+                    <input type="text" id="template-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="template-main-question">Hoofdvraag *</label>
+                    <input type="text" id="template-main-question" required>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="template-description">Beschrijving</label>
+                    <textarea id="template-description" rows="4"></textarea>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="template-sub-questions">Deelvragen (één per regel)</label>
+                    <textarea id="template-sub-questions" rows="4" placeholder="Bijv: Wat is het probleem?&#10;Hoe kunnen we dit oplossen?&#10;Wat zijn de stappen?"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Sjabloon opslaan
+                </button>
+                <button type="button" class="btn btn-danger" id="cancelTemplateBtn">
+                    <i class="fas fa-times"></i> Annuleren
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Overlay for modals -->
+    <div id="modalOverlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;"></div>
+    
     <script src="../js/auth.js"></script>
     <script src="../js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const newChallengeBtn = document.getElementById('newChallengeBtn');
-            const newChallengeCard = document.getElementById('newChallengeCard');
-            const cancelChallengeBtn = document.getElementById('cancelChallengeBtn');
-            const newChallengeForm = document.querySelector('.new-challenge-form');
+            const user = getCurrentUser();
             
-            // Show/hide new challenge form
-            if (newChallengeBtn && newChallengeCard) {
-                newChallengeBtn.addEventListener('click', function() {
-                    newChallengeCard.classList.remove('hidden');
-                    newChallengeBtn.classList.add('hidden');
-                });
+            // For students: Show new challenge form
+            if (isStudent()) {
+                const newChallengeBtn = document.getElementById('newChallengeBtn');
+                const newChallengeCard = document.getElementById('newChallengeCard');
+                const cancelChallengeBtn = document.getElementById('cancelChallengeBtn');
+                const newChallengeForm = document.querySelector('.new-challenge-form');
+                const modalOverlay = document.getElementById('modalOverlay');
+                
+                if (newChallengeBtn && newChallengeCard) {
+                    newChallengeBtn.addEventListener('click', function() {
+                        newChallengeCard.classList.remove('hidden');
+                        modalOverlay.classList.remove('hidden');
+                    });
+                }
+                
+                if (cancelChallengeBtn && newChallengeCard) {
+                    cancelChallengeBtn.addEventListener('click', function() {
+                        newChallengeCard.classList.add('hidden');
+                        modalOverlay.classList.add('hidden');
+                        newChallengeForm.reset();
+                    });
+                }
+                
+                if (modalOverlay) {
+                    modalOverlay.addEventListener('click', function() {
+                        newChallengeCard.classList.add('hidden');
+                        modalOverlay.classList.add('hidden');
+                        newChallengeForm.reset();
+                    });
+                }
+                
+                if (newChallengeForm) {
+                    newChallengeForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        createChallenge();
+                    });
+                }
+                
+                // Load student's challenges
+                loadChallenges();
             }
             
-            if (cancelChallengeBtn && newChallengeCard) {
-                cancelChallengeBtn.addEventListener('click', function() {
-                    newChallengeCard.classList.add('hidden');
-                    newChallengeBtn.classList.remove('hidden');
-                    newChallengeForm.reset();
-                });
-            }
-            
-            // Create challenge for students (coaches)
-            const createChallengeForStudentsBtn = document.getElementById('createChallengeForStudentsBtn');
-            if (createChallengeForStudentsBtn) {
-                createChallengeForStudentsBtn.addEventListener('click', function() {
-                    alert('Selecteer leerlingen en maak een challenge aan die naar hun account wordt gekopieerd.');
-                    // In a real app, this would open a modal with student selection
-                });
+            // For coaches: Template management
+            if (isCoach()) {
+                const createTemplateBtn = document.getElementById('createTemplateChallengeBtn');
+                const createTemplateCard = document.getElementById('createTemplateCard');
+                const cancelTemplateBtn = document.getElementById('cancelTemplateBtn');
+                const newTemplateForm = document.querySelector('.new-template-form');
+                const modalOverlay = document.getElementById('modalOverlay');
+                
+                if (createTemplateBtn && createTemplateCard) {
+                    createTemplateBtn.addEventListener('click', function() {
+                        createTemplateCard.classList.remove('hidden');
+                        modalOverlay.classList.remove('hidden');
+                    });
+                }
+                
+                if (cancelTemplateBtn && createTemplateCard) {
+                    cancelTemplateBtn.addEventListener('click', function() {
+                        createTemplateCard.classList.add('hidden');
+                        modalOverlay.classList.add('hidden');
+                        newTemplateForm.reset();
+                    });
+                }
+                
+                if (modalOverlay) {
+                    modalOverlay.addEventListener('click', function() {
+                        createTemplateCard.classList.add('hidden');
+                        modalOverlay.classList.add('hidden');
+                        newTemplateForm.reset();
+                    });
+                }
+                
+                if (newTemplateForm) {
+                    newTemplateForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        createChallengeTemplate();
+                    });
+                }
+                
+                // Setup assignment functionality
+                setupChallengeAssignment();
+                
+                // Load templates and all challenges
+                loadChallengeTemplates();
+                loadAllChallenges();
             }
         });
+        
+        // Create challenge for students
+        function createChallenge() {
+            const user = getCurrentUser();
+            if (!user || !isStudent()) return;
+            
+            const form = document.querySelector('.new-challenge-form');
+            if (!form) return;
+            
+            const title = form.querySelector('#challenge-title').value.trim();
+            const description = form.querySelector('#challenge-description').value.trim();
+            const mainQuestion = form.querySelector('#challenge-main-question').value.trim();
+            const subQuestions = form.querySelector('#challenge-sub-questions').value.split('\n').filter(q => q.trim());
+            const deadline = form.querySelector('#challenge-deadline').value;
+            const participants = form.querySelector('#challenge-participants').value.split(',').map(p => p.trim()).filter(p => p);
+            const isPublic = form.querySelector('#challenge-public').checked;
+            const status = form.querySelector('#challenge-status').value;
+            
+            if (!title) {
+                alert('Vul alstublieft een titel in');
+                return;
+            }
+            
+            const challenge = {
+                id: Date.now(),
+                title,
+                description,
+                mainQuestion,
+                subQuestions,
+                deadline,
+                participants: [user.username, ...participants],
+                createdBy: user.username,
+                createdAt: new Date().toISOString(),
+                status,
+                isPublic
+            };
+            
+            if (!user.challenges) {
+                user.challenges = [];
+            }
+            
+            user.challenges.push(challenge);
+            
+            // Save to localStorage
+            saveUserData(user.username, user);
+            
+            // Reset form and hide
+            form.reset();
+            document.getElementById('newChallengeCard').classList.add('hidden');
+            document.getElementById('modalOverlay').classList.add('hidden');
+            
+            // Reload challenges
+            loadChallenges();
+            
+            alert('Challenge succesvol aangemaakt!');
+        }
+        
+        // Load student's challenges
+        function loadChallenges() {
+            const user = getCurrentUser();
+            if (!user || !isStudent()) return;
+            
+            const myChallengesGrid = document.getElementById('myChallengesGrid');
+            const sharedChallengesGrid = document.getElementById('sharedChallengesGrid');
+            
+            if (myChallengesGrid) {
+                myChallengesGrid.innerHTML = '';
+                if (user.challenges && user.challenges.length > 0) {
+                    user.challenges.forEach(challenge => {
+                        if (!challenge.assignedBy) { // Only show own challenges
+                            addChallengeToDOM(challenge, myChallengesGrid);
+                        }
+                    });
+                } else {
+                    myChallengesGrid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Geen eigen challenges gevonden</p>';
+                }
+            }
+            
+            if (sharedChallengesGrid) {
+                sharedChallengesGrid.innerHTML = '';
+                if (user.challenges && user.challenges.length > 0) {
+                    user.challenges.forEach(challenge => {
+                        if (challenge.assignedBy) { // Show assigned challenges
+                            addChallengeToDOM(challenge, sharedChallengesGrid);
+                        }
+                    });
+                } else {
+                    sharedChallengesGrid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Geen challenges van coaches gevonden</p>';
+                }
+            }
+        }
+        
+        // Create challenge template for coaches
+        function createChallengeTemplate() {
+            const user = getCurrentUser();
+            if (!user || !isCoach()) return;
+            
+            const form = document.querySelector('.new-template-form');
+            if (!form) return;
+            
+            const title = form.querySelector('#template-title').value.trim();
+            const description = form.querySelector('#template-description').value.trim();
+            const mainQuestion = form.querySelector('#template-main-question').value.trim();
+            const subQuestions = form.querySelector('#template-sub-questions').value.split('\n').filter(q => q.trim());
+            
+            if (!title) {
+                alert('Vul alstublieft een titel in');
+                return;
+            }
+            
+            const template = {
+                id: 'template_' + Date.now(),
+                title,
+                description,
+                mainQuestion,
+                subQuestions,
+                createdBy: user.username,
+                createdAt: new Date().toISOString(),
+                isTemplate: true
+            };
+            
+            if (!user.challenges) {
+                user.challenges = [];
+            }
+            
+            user.challenges.push(template);
+            
+            // Save to localStorage
+            saveUserData(user.username, user);
+            
+            // Reset form and hide
+            form.reset();
+            document.getElementById('createTemplateCard').classList.add('hidden');
+            document.getElementById('modalOverlay').classList.add('hidden');
+            
+            // Reload templates
+            loadChallengeTemplates();
+            
+            alert('Challenge sjabloon succesvol opgeslagen!');
+        }
+        
+        // Load challenge templates for coaches
+        function loadChallengeTemplates() {
+            const user = getCurrentUser();
+            if (!user || !isCoach()) return;
+            
+            const templateGrid = document.getElementById('templateChallengesGrid');
+            const selectTemplate = document.getElementById('selectTemplateForAssignment');
+            
+            if (templateGrid) {
+                templateGrid.innerHTML = '';
+                const templates = user.challenges.filter(c => c.isTemplate);
+                if (templates.length > 0) {
+                    templates.forEach(template => {
+                        addTemplateToDOM(template, templateGrid);
+                    });
+                } else {
+                    templateGrid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Geen sjablonen gevonden. Maak een nieuw sjabloon aan.</p>';
+                }
+            }
+            
+            if (selectTemplate) {
+                selectTemplate.innerHTML = '<option value="">-- Kies een sjabloon --</option>';
+                const templates = user.challenges.filter(c => c.isTemplate);
+                templates.forEach(template => {
+                    const option = document.createElement('option');
+                    option.value = template.id;
+                    option.textContent = template.title;
+                    selectTemplate.appendChild(option);
+                });
+            }
+        }
+        
+        // Load all challenges for coaches
+        function loadAllChallenges() {
+            const allChallengesGrid = document.getElementById('allChallengesGrid');
+            if (!allChallengesGrid) return;
+            
+            allChallengesGrid.innerHTML = '';
+            
+            // Get all students' challenges
+            const allStudents = getAllStudents();
+            let allAssignedChallenges = [];
+            
+            allStudents.forEach(student => {
+                if (student.challenges) {
+                    student.challenges.forEach(challenge => {
+                        if (challenge.assignedBy) {
+                            allAssignedChallenges.push({ ...challenge, studentUsername: student.username });
+                        }
+                    });
+                }
+            });
+            
+            if (allAssignedChallenges.length > 0) {
+                allAssignedChallenges.forEach(challenge => {
+                    addAssignedChallengeToDOM(challenge, allChallengesGrid);
+                });
+            } else {
+                allChallengesGrid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Geen toegewezen challenges gevonden</p>';
+            }
+        }
+        
+        // Setup challenge assignment for coaches
+        function setupChallengeAssignment() {
+            const selectMethod = document.getElementById('studentSelectionMethod');
+            const individualDiv = document.getElementById('individualStudentsDiv');
+            const classDiv = document.getElementById('classSelectionDiv');
+            const assignBtn = document.getElementById('assignChallengeBtn');
+            
+            if (selectMethod) {
+                selectMethod.addEventListener('change', function() {
+                    if (this.value === 'individual') {
+                        individualDiv.style.display = 'block';
+                        classDiv.style.display = 'none';
+                    } else {
+                        individualDiv.style.display = 'none';
+                        classDiv.style.display = 'block';
+                    }
+                });
+            }
+            
+            if (assignBtn) {
+                assignBtn.addEventListener('click', function() {
+                    assignChallengeToStudents();
+                });
+            }
+        }
+        
+        // Assign challenge to students
+        function assignChallengeToStudents() {
+            const user = getCurrentUser();
+            if (!user || !isCoach()) return;
+            
+            const templateSelect = document.getElementById('selectTemplateForAssignment');
+            const selectMethod = document.getElementById('studentSelectionMethod');
+            const studentsSelect = document.getElementById('selectStudents');
+            const classSelect = document.getElementById('selectClass');
+            const resultDiv = document.getElementById('assignResult');
+            
+            const templateId = templateSelect.value;
+            if (!templateId) {
+                alert('Selecteer alstublieft een sjabloon');
+                return;
+            }
+            
+            // Find the template
+            const template = user.challenges.find(c => c.id === templateId);
+            if (!template) {
+                alert('Sjabloon niet gevonden');
+                return;
+            }
+            
+            let studentUsernames = [];
+            
+            if (selectMethod.value === 'individual') {
+                const selectedOptions = Array.from(studentsSelect.selectedOptions);
+                if (selectedOptions.length === 0) {
+                    alert('Selecteer alstublieft minimaal één leerling');
+                    return;
+                }
+                studentUsernames = selectedOptions.map(opt => opt.value);
+            } else {
+                const classId = classSelect.value;
+                if (!classId) {
+                    alert('Selecteer alstublieft een klas');
+                    return;
+                }
+                const classInfo = getAllClasses()[classId];
+                if (classInfo) {
+                    studentUsernames = classInfo.students;
+                }
+            }
+            
+            if (studentUsernames.length === 0) {
+                alert('Geen leerlingen geselecteerd');
+                return;
+            }
+            
+            // Assign the challenge to students
+            const result = window.auth.assignChallengeToStudents(user.username, template, studentUsernames);
+            
+            if (result.success) {
+                if (resultDiv) {
+                    resultDiv.textContent = result.message;
+                    resultDiv.style.background = '#D4EDDA';
+                    resultDiv.style.color = '#155724';
+                    resultDiv.style.display = 'block';
+                }
+                
+                // Reload all challenges
+                loadAllChallenges();
+                
+                // Reset selection
+                templateSelect.value = '';
+                studentsSelect.selectedIndex = -1;
+                classSelect.value = '';
+            } else {
+                if (resultDiv) {
+                    resultDiv.textContent = result.message;
+                    resultDiv.style.background = '#F8D7DA';
+                    resultDiv.style.color = '#721C24';
+                    resultDiv.style.display = 'block';
+                }
+            }
+        }
+        
+        // Add challenge to DOM
+        function addChallengeToDOM(challenge, grid) {
+            const challengeCard = document.createElement('div');
+            challengeCard.className = 'challenge-card';
+            
+            const title = document.createElement('h3');
+            title.className = 'challenge-title';
+            title.textContent = challenge.title;
+            
+            const meta = document.createElement('div');
+            meta.className = 'challenge-meta';
+            
+            const deadline = document.createElement('span');
+            deadline.innerHTML = `<i class="fas fa-calendar"></i> Deadline: ${challenge.deadline || 'Geen deadline'}`;
+            
+            const status = document.createElement('span');
+            status.innerHTML = `<i class="fas fa-circle"></i> ${challenge.status || 'actief'}`;
+            
+            meta.appendChild(deadline);
+            meta.appendChild(status);
+            
+            const description = document.createElement('p');
+            description.className = 'challenge-description';
+            description.textContent = challenge.description || 'Geen beschrijving';
+            
+            const participants = document.createElement('div');
+            participants.className = 'challenge-participants';
+            
+            if (challenge.participants && challenge.participants.length > 0) {
+                challenge.participants.forEach(participant => {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'participant-avatar';
+                    avatar.textContent = participant.substring(0, 2).toUpperCase();
+                    participants.appendChild(avatar);
+                });
+            }
+            
+            const actions = document.createElement('div');
+            actions.className = 'challenge-actions';
+            actions.style.display = 'flex';
+            actions.style.gap = '10px';
+            actions.style.marginTop = '15px';
+            
+            const viewBtn = document.createElement('button');
+            viewBtn.className = 'btn btn-outline';
+            viewBtn.textContent = 'Bekijken';
+            viewBtn.addEventListener('click', function() {
+                viewChallenge(challenge);
+            });
+            
+            actions.appendChild(viewBtn);
+            
+            challengeCard.appendChild(title);
+            challengeCard.appendChild(meta);
+            challengeCard.appendChild(description);
+            challengeCard.appendChild(participants);
+            challengeCard.appendChild(actions);
+            
+            grid.appendChild(challengeCard);
+        }
+        
+        // Add template to DOM
+        function addTemplateToDOM(template, grid) {
+            const templateCard = document.createElement('div');
+            templateCard.className = 'challenge-card';
+            templateCard.style.borderLeft = '4px solid var(--secondary-color)';
+            
+            const title = document.createElement('h3');
+            title.className = 'challenge-title';
+            title.innerHTML = `<i class="fas fa-file-alt"></i> ${template.title}`;
+            
+            const description = document.createElement('p');
+            description.className = 'challenge-description';
+            description.textContent = template.description || 'Geen beschrijving';
+            
+            const actions = document.createElement('div');
+            actions.className = 'challenge-actions';
+            actions.style.display = 'flex';
+            actions.style.gap = '10px';
+            actions.style.marginTop = '15px';
+            
+            const viewBtn = document.createElement('button');
+            viewBtn.className = 'btn btn-outline';
+            viewBtn.textContent = 'Bekijken';
+            viewBtn.addEventListener('click', function() {
+                viewChallenge(template);
+            });
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-danger';
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Verwijderen';
+            deleteBtn.addEventListener('click', function() {
+                if (confirm(`Weet je zeker dat je het sjabloon "${template.title}" wilt verwijderen?`)) {
+                    deleteChallengeTemplate(template.id);
+                }
+            });
+            
+            actions.appendChild(viewBtn);
+            actions.appendChild(deleteBtn);
+            
+            templateCard.appendChild(title);
+            templateCard.appendChild(description);
+            templateCard.appendChild(actions);
+            
+            grid.appendChild(templateCard);
+        }
+        
+        // Add assigned challenge to DOM (for coaches)
+        function addAssignedChallengeToDOM(challenge, grid) {
+            const challengeCard = document.createElement('div');
+            challengeCard.className = 'challenge-card';
+            
+            const title = document.createElement('h3');
+            title.className = 'challenge-title';
+            title.textContent = challenge.title;
+            
+            const meta = document.createElement('div');
+            meta.className = 'challenge-meta';
+            
+            const assignedTo = document.createElement('span');
+            assignedTo.innerHTML = `<i class="fas fa-user"></i> Toegewezen aan: ${challenge.studentUsername}`;
+            
+            const assignedBy = document.createElement('span');
+            assignedBy.innerHTML = `<i class="fas fa-user-tie"></i> Door: ${challenge.assignedBy}`;
+            
+            meta.appendChild(assignedTo);
+            meta.appendChild(assignedBy);
+            
+            const description = document.createElement('p');
+            description.className = 'challenge-description';
+            description.textContent = challenge.description || 'Geen beschrijving';
+            
+            const actions = document.createElement('div');
+            actions.className = 'challenge-actions';
+            actions.style.display = 'flex';
+            actions.style.gap = '10px';
+            actions.style.marginTop = '15px';
+            
+            const viewBtn = document.createElement('button');
+            viewBtn.className = 'btn btn-outline';
+            viewBtn.textContent = 'Bekijken';
+            viewBtn.addEventListener('click', function() {
+                viewChallenge(challenge);
+            });
+            
+            actions.appendChild(viewBtn);
+            
+            challengeCard.appendChild(title);
+            challengeCard.appendChild(meta);
+            challengeCard.appendChild(description);
+            challengeCard.appendChild(actions);
+            
+            grid.appendChild(challengeCard);
+        }
+        
+        // Delete challenge template
+        function deleteChallengeTemplate(templateId) {
+            const user = getCurrentUser();
+            if (!user || !isCoach()) return;
+            
+            user.challenges = user.challenges.filter(c => c.id !== templateId);
+            saveUserData(user.username, user);
+            loadChallengeTemplates();
+            alert('Sjabloon succesvol verwijderd');
+        }
+        
+        // View challenge details
+        function viewChallenge(challenge) {
+            let message = `Challenge: ${challenge.title}\n\n`;
+            message += `Beschrijving: ${challenge.description}\n\n`;
+            message += `Hoofdvraag: ${challenge.mainQuestion}\n\n`;
+            
+            if (challenge.subQuestions && challenge.subQuestions.length > 0) {
+                message += `Deelvragen:\n`;
+                challenge.subQuestions.forEach((q, i) => {
+                    message += `${i + 1}. ${q}\n`;
+                });
+                message += `\n`;
+            }
+            
+            if (challenge.deadline) {
+                message += `Deadline: ${challenge.deadline}\n\n`;
+            }
+            
+            if (challenge.createdBy) {
+                message += `Aangemaakt door: ${challenge.createdBy}\n`;
+            }
+            
+            if (challenge.assignedBy) {
+                message += `Toegewezen door: ${challenge.assignedBy}\n`;
+            }
+            
+            if (challenge.assignedAt) {
+                message += `Toegewezen op: ${new Date(challenge.assignedAt).toLocaleDateString()}\n`;
+            }
+            
+            alert(message);
+        }
+        
+        // Export functions to window for access from other scripts
+        window.challengesPage = {
+            loadChallenges,
+            loadChallengeTemplates,
+            loadAllChallenges
+        };
     </script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/main.js"></script>
 </body>
 </html>

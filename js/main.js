@@ -388,39 +388,8 @@ function deleteTodoItem(index) {
 // ===== CHAT FUNCTIONALITY =====
 
 function initChat() {
-    const chatMain = document.querySelector('.chat-main');
-    if (!chatMain) return;
-    
-    const user = getCurrentUser();
-    if (!user) return;
-    
-    // Load chat history
-    loadChatHistory();
-    
-    // Chat input form
-    const chatInput = document.querySelector('.chat-input');
-    if (chatInput) {
-        const input = chatInput.querySelector('input');
-        const button = chatInput.querySelector('button');
-        
-        chatInput.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const message = input.value.trim();
-            if (message) {
-                sendMessage(message);
-                input.value = '';
-            }
-        });
-    }
-    
-    // Chat list click handlers
-    const chatListItems = document.querySelectorAll('.chat-list li');
-    chatListItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const chatId = this.dataset.chatId;
-            selectChat(chatId);
-        });
-    });
+    // Chat functionality is now handled in forum.html
+    // This function is kept for backward compatibility
 }
 
 function loadChatHistory() {
@@ -522,23 +491,8 @@ function selectChat(chatId) {
 // ===== CHALLENGES FUNCTIONALITY =====
 
 function initChallenges() {
-    const challengesPage = document.querySelector('.challenge-grid');
-    if (!challengesPage) return;
-    
-    const user = getCurrentUser();
-    if (!user) return;
-    
-    // Load challenges
-    loadChallenges();
-    
-    // New challenge form
-    const newChallengeForm = document.querySelector('.new-challenge-form');
-    if (newChallengeForm) {
-        newChallengeForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            createChallenge();
-        });
-    }
+    // Challenges functionality is now handled in challenges.html
+    // This function is kept for backward compatibility
 }
 
 function loadChallenges() {
