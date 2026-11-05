@@ -1,133 +1,90 @@
-/* ===== BASE STYLES ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* ============================================
+   NATURE / FOREST THEME FOR LC AGORA WEBSITE
+   Inspired by forest and jungle themes
+   ============================================ */
 
+/* ===== NATURE COLOR PALETTE ===== */
 :root {
-    --primary-color: #2E8B57;
-    --primary-dark: #228B22;
-    --primary-light: #3CB371;
-    --secondary-color: #3498DB;
-    --accent-color: #F39C12;
-    --background-color: #F8F9FA;
+    /* Deep Forest Greens */
+    --forest-deep: #1B5E20;
+    --forest-primary: #2E7D32;
+    --forest-light: #388E3C;
+    --forest-bright: #4CAF50;
+    --forest-pale: #81C784;
+    
+    /* Earthy Browns */
+    --earth-dark: #3E2723;
+    --earth-medium: #5D4037;
+    --earth-light: #795548;
+    --earth-pale: #8D6E63;
+    --earth-tan: #A1887F;
+    --earth-beige: #D7CCC8;
+    
+    /* Natural Accents */
+    --moss: #827717;
+    --amber: #F57F17;
+    --sunset: #E65100;
+    --sky: #3498DB;
+    
+    /* Backgrounds */
+    --bg-light: #E8F5E9;
+    --bg-medium: #C8E6C9;
+    --bg-dark: #A5D6A7;
+    
+    /* Text */
+    --text-dark: #3E2723;
+    --text-medium: #5D4037;
+    --text-light: #795548;
+    
+    /* Updated CSS Variables */
+    --primary-color: #2E7D32;
+    --primary-dark: #1B5E20;
+    --primary-light: #4CAF50;
+    --secondary-color: #8D6E63;
+    --accent-color: #D7CCC8;
+    --background-color: #E8F5E9;
     --card-bg: #FFFFFF;
-    --text-dark: #2C3E50;
-    --text-light: #7F8C8D;
-    --success: #27AE60;
-    --warning: #F39C12;
-    --danger: #E74C3C;
+    --text-dark: #3E2723;
+    --text-light: #6D4C41;
+    --success: #388E3C;
+    --warning: #F57F17;
+    --danger: #C62828;
     --border-radius: 12px;
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
 
+/* ===== NATURE BACKGROUND PATTERNS ===== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--background-color);
+    background-image: 
+        /* Subtle leaf pattern */
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 25%),
+        radial-gradient(circle at 90% 80%, rgba(255,255,255,0.4) 0%, transparent 25%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, transparent 20%);
     color: var(--text-dark);
     line-height: 1.6;
+    min-height: 100vh;
 }
 
-/* ===== LAYOUT ===== */
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* ===== HEADER ===== */
+/* ===== WOOD-LIKE HEADER ===== */
 .header {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    background: linear-gradient(135deg, 
+        var(--forest-deep) 0%,
+        var(--forest-primary) 25%,
+        var(--forest-bright) 50%,
+        var(--forest-primary) 75%,
+        var(--forest-deep) 100%);
     color: white;
     padding: 15px 0;
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-icon {
-    width: 40px;
-    height: 40px;
-}
-
-.nav-links {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.nav-links a:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.user-name {
-    font-weight: 500;
-}
-
-.logout-btn {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.logout-btn:hover {
-    background: white;
-    color: var(--primary-color);
-}
-
-/* ===== MAIN CONTENT ===== */
-.main {
-    padding: 30px 0;
-    min-height: calc(100vh - 120px);
-}
-
-.page-title {
-    text-align: center;
-    margin-bottom: 30px;
-    color: var(--primary-color);
-    font-size: 2.5rem;
-}
-
-/* ===== CARD STYLES ===== */
+/* ===== ORGANIC CARD STYLING ===== */
 .card {
     background: var(--card-bg);
     border-radius: var(--border-radius);
@@ -135,14 +92,28 @@ body {
     padding: 25px;
     margin-bottom: 20px;
     transition: var(--transition);
+    border: 1px solid rgba(139, 110, 97, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--forest-primary), var(--forest-bright), var(--forest-primary));
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.25);
+    border-color: rgba(46, 125, 50, 0.3);
 }
 
-/* ===== BUTTON STYLES ===== */
+/* ===== NATURE-INSPIRED BUTTONS ===== */
 .btn {
     display: inline-block;
     padding: 12px 24px;
@@ -154,60 +125,57 @@ body {
     transition: var(--transition);
     text-decoration: none;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--forest-deep), var(--forest-primary));
     color: white;
+    border: 2px solid var(--forest-deep);
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
+    background: linear-gradient(135deg, var(--forest-primary), var(--forest-bright));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
 }
 
 .btn-secondary {
-    background: var(--secondary-color);
+    background: linear-gradient(135deg, var(--earth-medium), var(--earth-light));
     color: white;
+    border: 2px solid var(--earth-medium);
 }
 
 .btn-secondary:hover {
-    background: #2980B9;
+    background: linear-gradient(135deg, var(--earth-light), var(--earth-tan));
+    transform: translateY(-2px);
 }
 
 .btn-success {
-    background: var(--success);
+    background: linear-gradient(135deg, var(--forest-light), var(--forest-bright));
     color: white;
+    border: 2px solid var(--forest-light);
 }
 
 .btn-danger {
-    background: var(--danger);
+    background: linear-gradient(135deg, #B71C1C, #C62828);
     color: white;
-}
-
-.btn-warning {
-    background: var(--warning);
-    color: white;
+    border: 2px solid #B71C1C;
 }
 
 .btn-outline {
     background: transparent;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
+    border: 2px solid var(--forest-primary);
+    color: var(--forest-primary);
 }
 
 .btn-outline:hover {
-    background: var(--primary-color);
+    background: var(--forest-primary);
     color: white;
 }
 
-/* ===== HOME PAGE - MODULE CARDS ===== */
-.modules-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
-}
-
+/* ===== MODULE CARDS WITH NATURE BORDER ===== */
 .module-card {
     background: var(--card-bg);
     border-radius: var(--border-radius);
@@ -216,29 +184,55 @@ body {
     transition: var(--transition);
     cursor: pointer;
     text-align: center;
+    border: 3px solid var(--forest-primary);
+    position: relative;
+}
+
+.module-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(46, 125, 50, 0.1) 0%,
+        rgba(76, 175, 80, 0.05) 100%);
+    pointer-events: none;
 }
 
 .module-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(46, 125, 50, 0.35);
+    border-color: var(--forest-bright);
 }
 
 .module-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-bottom: 3px solid var(--primary-color);
-}
-
-.module-content {
-    padding: 20px;
+    border-bottom: 5px solid var(--forest-primary);
+    filter: saturate(1.3) contrast(1.1);
 }
 
 .module-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--forest-deep);
     margin-bottom: 10px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.module-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--forest-light), var(--forest-primary), var(--forest-light));
 }
 
 .module-description {
@@ -247,87 +241,14 @@ body {
     line-height: 1.5;
 }
 
-/* ===== FORMS ===== */
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--text-dark);
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #DDD;
-    border-radius: var(--border-radius);
-    font-size: 16px;
-    transition: var(--transition);
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
-}
-
-.form-group textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.form-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: flex-end;
-    margin-top: 25px;
-}
-
-/* ===== TABLE STYLES ===== */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-.table th,
-.table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #DDD;
-}
-
-.table th {
-    background: var(--primary-color);
-    color: white;
-    font-weight: 600;
-}
-
-.table tr:hover {
-    background: #F5F5F5;
-}
-
-.table-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.table-actions .btn {
-    padding: 6px 12px;
-    font-size: 14px;
-}
-
-/* ===== CALENDAR ===== */
+/* ===== NATURE CALENDAR ===== */
 .calendar {
     max-width: 800px;
     margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
 }
 
 .calendar-header {
@@ -335,36 +256,43 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--forest-light);
 }
 
 .calendar-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--forest-deep);
 }
 
-.calendar-nav {
-    display: flex;
-    gap: 10px;
+.calendar-nav button {
+    background: var(--forest-primary);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+.calendar-nav button:hover {
+    background: var(--forest-dark);
+    transform: scale(1.1);
 }
 
 .calendar-day-header {
     text-align: center;
     font-weight: 600;
     padding: 10px;
-    background: var(--primary-light);
+    background: linear-gradient(135deg, var(--forest-deep), var(--forest-primary));
     color: white;
 }
 
 .calendar-day {
     aspect-ratio: 1;
-    border: 2px solid #DDD;
+    border: 2px solid var(--earth-pale);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -374,26 +302,30 @@ body {
 }
 
 .calendar-day:hover {
-    border-color: var(--primary-color);
+    border-color: var(--forest-primary);
+    background: rgba(76, 175, 80, 0.05);
 }
 
 .calendar-day.empty {
-    background: #F5F5F5;
+    background: rgba(139, 110, 97, 0.1);
     cursor: not-allowed;
 }
 
 .calendar-day.today {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--forest-deep), var(--forest-primary));
     color: white;
+    font-weight: bold;
 }
 
 .calendar-day.has-event {
-    background: #E8F5E9;
+    background: rgba(76, 175, 80, 0.15);
+    border-color: var(--forest-light);
 }
 
 .calendar-day-number {
     font-weight: 600;
     margin-bottom: 5px;
+    color: var(--text-dark);
 }
 
 .calendar-events {
@@ -403,9 +335,9 @@ body {
 
 .calendar-events li {
     font-size: 11px;
-    background: var(--primary-light);
+    background: linear-gradient(135deg, var(--forest-primary), var(--forest-light));
     color: white;
-    padding: 2px 4px;
+    padding: 3px 6px;
     border-radius: 3px;
     margin: 2px 0;
     white-space: nowrap;
@@ -413,7 +345,7 @@ body {
     text-overflow: ellipsis;
 }
 
-/* ===== TODO LIST ===== */
+/* ===== TODO LIST WITH LEAF ACCENTS ===== */
 .todo-list {
     max-width: 600px;
     margin: 20px auto;
@@ -429,26 +361,31 @@ body {
     margin-bottom: 10px;
     box-shadow: var(--box-shadow);
     transition: var(--transition);
+    border-left: 4px solid var(--forest-primary);
 }
 
 .todo-item:hover {
     transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
 }
 
 .todo-checkbox {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    accent-color: var(--forest-primary);
 }
 
 .todo-text {
     flex: 1;
     font-size: 16px;
+    color: var(--text-dark);
 }
 
 .todo-completed .todo-text {
     text-decoration: line-through;
-    color: #999;
+    color: var(--earth-medium);
+    opacity: 0.7;
 }
 
 .todo-actions {
@@ -456,24 +393,7 @@ body {
     gap: 10px;
 }
 
-.add-todo {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.add-todo input {
-    flex: 1;
-    padding: 12px;
-    border: 2px solid #DDD;
-    border-radius: var(--border-radius);
-}
-
-.add-todo button {
-    padding: 12px 20px;
-}
-
-/* ===== FORUM/CHAT ===== */
+/* ===== FORUM/CHAT WITH NATURE TOUCH ===== */
 .chat-container {
     display: flex;
     gap: 20px;
@@ -488,17 +408,14 @@ body {
     box-shadow: var(--box-shadow);
     padding: 20px;
     height: fit-content;
+    border: 1px solid var(--earth-pale);
 }
 
 .chat-sidebar h3 {
-    color: var(--primary-color);
+    color: var(--forest-deep);
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-light);
-}
-
-.chat-list {
-    list-style: none;
+    border-bottom: 2px solid var(--forest-light);
 }
 
 .chat-list li {
@@ -507,15 +424,18 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: var(--transition);
+    border-left: 3px solid transparent;
 }
 
 .chat-list li:hover {
-    background: #F5F5F5;
+    background: rgba(76, 175, 80, 0.05);
+    border-left-color: var(--forest-primary);
 }
 
 .chat-list li.active {
-    background: var(--primary-light);
+    background: linear-gradient(135deg, var(--forest-primary), var(--forest-light));
     color: white;
+    border-left-color: var(--forest-deep);
 }
 
 .chat-main {
@@ -524,6 +444,7 @@ body {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: 20px;
+    border: 1px solid var(--earth-pale);
 }
 
 .chat-header {
@@ -531,7 +452,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 15px;
-    border-bottom: 2px solid #EEE;
+    border-bottom: 2px solid var(--earth-pale);
     margin-bottom: 15px;
 }
 
@@ -539,9 +460,10 @@ body {
     height: 400px;
     overflow-y: auto;
     margin-bottom: 15px;
-    padding: 10px;
-    background: #F9F9F9;
+    padding: 15px;
+    background: rgba(232, 245, 233, 0.5);
     border-radius: 8px;
+    border: 1px solid var(--earth-tan);
 }
 
 .message {
@@ -550,18 +472,21 @@ body {
     border-radius: 18px;
     max-width: 70%;
     word-wrap: break-word;
+    position: relative;
 }
 
 .message.received {
-    background: #E5E5EA;
+    background: rgba(139, 110, 97, 0.15);
     align-self: flex-start;
+    border-bottom-left-radius: 0;
 }
 
 .message.sent {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--forest-primary), var(--forest-light));
     color: white;
     align-self: flex-end;
     margin-left: auto;
+    border-bottom-right-radius: 0;
 }
 
 .message-info {
@@ -580,22 +505,18 @@ body {
 .chat-input input {
     flex: 1;
     padding: 12px;
-    border: 2px solid #DDD;
+    border: 2px solid var(--earth-pale);
     border-radius: var(--border-radius);
+    transition: var(--transition);
 }
 
-.chat-input button {
-    padding: 12px 20px;
+.chat-input input:focus {
+    outline: none;
+    border-color: var(--forest-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
 }
 
-/* ===== CHALLENGES & WORKSHOPS ===== */
-.challenge-grid,
-.workshop-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
+/* ===== CHALLENGES & WORKSHOPS WITH NATURE STYLING ===== */
 .challenge-card,
 .workshop-card {
     background: var(--card-bg);
@@ -603,19 +524,34 @@ body {
     box-shadow: var(--box-shadow);
     padding: 20px;
     transition: var(--transition);
+    border: 1px solid var(--earth-pale);
+    position: relative;
+    overflow: hidden;
+}
+
+.challenge-card::before,
+.workshop-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--forest-primary), var(--forest-light));
 }
 
 .challenge-card:hover,
 .workshop-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.2);
+    border-color: var(--forest-light);
 }
 
 .challenge-title,
 .workshop-title {
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--forest-deep);
     margin-bottom: 10px;
 }
 
@@ -628,6 +564,11 @@ body {
     color: var(--text-light);
 }
 
+.challenge-meta i,
+.workshop-meta i {
+    color: var(--forest-primary);
+}
+
 .challenge-description,
 .workshop-description {
     color: var(--text-dark);
@@ -635,54 +576,50 @@ body {
     line-height: 1.6;
 }
 
-.challenge-participants,
-.workshop-participants {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
-}
-
 .participant-avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--primary-light);
+    background: linear-gradient(135deg, var(--forest-primary), var(--forest-light));
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: 600;
     font-size: 12px;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* ===== LOGIN PAGE ===== */
+/* ===== LOGIN PAGE WITH NATURE THEME ===== */
 .login-container {
     max-width: 500px;
     margin: 50px auto;
     background: var(--card-bg);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     padding: 40px;
     text-align: center;
+    border: 2px solid var(--forest-primary);
 }
 
 .login-logo {
     width: 100px;
     height: 100px;
     margin: 0 auto 20px;
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--forest-deep), var(--forest-primary), var(--forest-light));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .login-title {
     font-size: 2rem;
-    color: var(--primary-color);
+    color: var(--forest-deep);
     margin-bottom: 10px;
 }
 
@@ -703,16 +640,17 @@ body {
 .login-input-group input {
     width: 100%;
     padding: 15px 15px 15px 45px;
-    border: 2px solid #DDD;
+    border: 2px solid var(--earth-pale);
     border-radius: var(--border-radius);
     font-size: 16px;
     transition: var(--transition);
+    background: white;
 }
 
 .login-input-group input:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+    border-color: var(--forest-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
 }
 
 .login-input-group i {
@@ -731,27 +669,42 @@ body {
 }
 
 .login-options a {
-    color: var(--primary-color);
+    color: var(--forest-primary);
     text-decoration: none;
+    font-weight: 600;
+}
+
+.login-options a:hover {
+    text-decoration: underline;
 }
 
 .login-btn {
     width: 100%;
     padding: 15px;
     font-size: 18px;
+    background: linear-gradient(135deg, var(--forest-deep), var(--forest-primary));
+    border: 2px solid var(--forest-deep);
+    color: white;
+    transition: var(--transition);
+}
+
+.login-btn:hover {
+    background: linear-gradient(135deg, var(--forest-primary), var(--forest-light));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
 }
 
 .password-change-notice {
-    background: #FFF3CD;
-    border: 1px solid #FFC107;
-    color: #856404;
+    background: rgba(255, 249, 196, 0.5);
+    border: 1px solid var(--amber);
+    color: var(--earth-dark);
     padding: 15px;
     border-radius: 8px;
     margin: 20px 0;
     font-size: 14px;
 }
 
-/* ===== INSPIRATION PAGE ===== */
+/* ===== INSPIRATION PAGE WITH NATURE TOUCH ===== */
 .inspiration-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -764,17 +717,20 @@ body {
     box-shadow: var(--box-shadow);
     overflow: hidden;
     transition: var(--transition);
+    border: 2px solid var(--earth-pale);
 }
 
 .inspiration-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.2);
+    border-color: var(--forest-light);
 }
 
 .inspiration-image {
     width: 100%;
     height: 180px;
     object-fit: cover;
+    filter: saturate(1.2);
 }
 
 .inspiration-content {
@@ -784,7 +740,7 @@ body {
 .inspiration-title {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--forest-deep);
     margin-bottom: 10px;
 }
 
@@ -805,7 +761,7 @@ body {
 }
 
 .tag {
-    background: var(--primary-light);
+    background: linear-gradient(135deg, var(--forest-primary), var(--forest-light));
     color: white;
     padding: 4px 10px;
     border-radius: 12px;
@@ -813,7 +769,7 @@ body {
 }
 
 .copy-btn {
-    background: var(--secondary-color);
+    background: linear-gradient(135deg, var(--earth-medium), var(--earth-light));
     color: white;
     border: none;
     padding: 8px 15px;
@@ -821,10 +777,103 @@ body {
     cursor: pointer;
     transition: var(--transition);
     margin-top: 10px;
+    width: 100%;
 }
 
 .copy-btn:hover {
-    background: #2980B9;
+    background: linear-gradient(135deg, var(--earth-light), var(--earth-tan));
+    transform: translateY(-2px);
+}
+
+/* ===== PAGE TITLE WITH LEAF DECORATION ===== */
+.page-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--forest-deep);
+    font-size: 2.5rem;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 6px;
+    background: linear-gradient(90deg, 
+        var(--forest-light) 0%,
+        var(--forest-primary) 50%,
+        var(--forest-light) 100%);
+    border-radius: 3px;
+}
+
+/* ===== FORMS WITH NATURE STYLING ===== */
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--earth-pale);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+    background: white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--forest-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+/* ===== ALERTS WITH NATURE COLORS ===== */
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--forest-deep);
+    border-color: var(--forest-primary);
+}
+
+.alert-warning {
+    background: rgba(245, 127, 23, 0.1);
+    color: var(--earth-dark);
+    border-color: var(--amber);
+}
+
+.alert-danger {
+    background: rgba(198, 40, 40, 0.1);
+    color: #B71C1C;
+    border-color: #C62828;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -906,6 +955,25 @@ body {
     }
 }
 
+/* ===== NATURE SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(139, 110, 97, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--forest-primary), var(--forest-light));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--forest-dark);
+}
+
 /* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
     from {
@@ -915,6 +983,15 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
     }
 }
 
@@ -943,47 +1020,4 @@ body {
 
 .hidden {
     display: none !important;
-}
-
-.alert {
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.alert-success {
-    background: #D4EDDA;
-    color: #155724;
-    border: 1px solid #C3E6CB;
-}
-
-.alert-warning {
-    background: #FFF3CD;
-    color: #856404;
-    border: 1px solid #FFC107;
-}
-
-.alert-danger {
-    background: #F8D7DA;
-    color: #721C24;
-    border: 1px solid #F5C6CB;
-}
-
-/* ===== SCROLLBAR STYLING ===== */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: #F1F1F1;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
 }
